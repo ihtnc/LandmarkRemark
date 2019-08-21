@@ -1,12 +1,34 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.Swagger;
+using LandmarkRemark.Api.Http;
+using LandmarkRemark.Api.Repositories;
+using LandmarkRemark.Api.Security;
+using LandmarkRemark.Api.Services;
 
 namespace LandmarkRemark
 {
     public static class StartupExtensions
     {
+        public static IServiceCollection AddDependencies(this IServiceCollection services)
+        {
+            return services
+                    .AddHttpClient()
+
+                    .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+
+                    .AddTransient<IRemarksService, RemarksService>()
+
+                    .AddTransient<IRemarksRepository, FirebaseRemarksRepository>()
+
+                    .AddTransient<IApiClient, ApiClient>()
+                    .AddTransient<IApiRequestProvider, ApiRequestProvider>()
+
+                    .AddTransient<IUserDetailsProvider, UserDetailsProvider>();
+        }
+
         public static IServiceCollection AddApiDocumentation(this IServiceCollection services)
         {
             return services.AddSwaggerGen(c =>
