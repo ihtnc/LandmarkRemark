@@ -46,13 +46,26 @@ namespace LandmarkRemark.Api.Tests.Http
         }
 
         [Fact]
+        public void CreatePatchRequest_Should_Set_HttpMethod_Correctly()
+        {
+            _provider.CreatePatchRequest("https://google.com", 123).Method.Should().Be(HttpMethod.Patch);
+        }
+
+        [Fact]
+        public void CreatePatchRequest_Should_Set_Uri_Correctly()
+        {
+            var url = "https://google.com";
+            _provider.CreatePatchRequest(url, 123).RequestUri.OriginalString.Should().Be(url);
+        }
+
+        [Fact]
         public void CreateDeleteRequest_Should_Set_HttpMethod_Correctly()
         {
             _provider.CreateDeleteRequest("https://google.com").Method.Should().Be(HttpMethod.Delete);
         }
 
         [Fact]
-        public void CreateDeleteRequest_Should_Set_HttpMethod_Correctly_Should_Set_Uri_Correctly()
+        public void CreateDeleteRequest_Should_Should_Set_Uri_Correctly()
         {
             var url = "https://google.com";
             _provider.CreateDeleteRequest(url).RequestUri.OriginalString.Should().Be(url);

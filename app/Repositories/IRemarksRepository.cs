@@ -6,6 +6,7 @@ namespace LandmarkRemark.Api.Repositories
     public interface IRemarksRepository
     {
         Task<RemarkDetails> AddRemark(RemarkDetails remark);
+        Task UpdateRemark(string remarkId, UpdatableRemarkDetails updates);
         Task DeleteRemark(string remarkId);
     }
 }

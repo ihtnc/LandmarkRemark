@@ -64,6 +64,19 @@ namespace LandmarkRemark.Api.Repositories
             return response;
         }
 
+        public async Task UpdateRemark(string remarkId, UpdatableRemarkDetails updates)
+        {
+            var url = $"{_config.Database.TrimEnd('/')}/{remarkId}";
+            var content = CreateUpdateRemarkRequest(updates);
+
+            var updateQuery = new Dictionary<string, string>(_defaultQuery);
+            updateQuery.Add("currentDocument.exists", "true");
+            updateQuery.Add("updateMask.fieldPaths", "remark");
+
+            var request = _requestProvider.CreatePatchRequest(url, content, headers: _defaultHeader, queries: updateQuery);
+            await _apiClient.Send<object>(request);
+        }
+
         public async Task DeleteRemark(string remarkId)
         {
             var url = $"{_config.Database.TrimEnd('/')}/{remarkId}";
@@ -82,6 +95,17 @@ namespace LandmarkRemark.Api.Repositories
                     ["lng"] = new JObject{ ["doubleValue"] = remark.Longitude },
                     ["remark"] = new JObject{ ["stringValue"] = remark.Remark },
                     ["uid"] = new JObject{ ["stringValue"] = remark.UserId }
+                }
+            };
+        }
+
+        private JObject CreateUpdateRemarkRequest(UpdatableRemarkDetails updates)
+        {
+            return new JObject
+            {
+                ["fields"] = new JObject
+                {
+                    ["remark"] = new JObject{ ["stringValue"] = updates.Remark }
                 }
             };
         }

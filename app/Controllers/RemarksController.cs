@@ -27,6 +27,20 @@ namespace LandmarkRemark.Api.Controllers
             return ApiResponseHelper.Created("Remark created.", response);
         }
 
+        [HttpPatch("{remarkId}")]
+        [Authorize]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ApiResponse>> UpdateRemark(string remarkId, [FromBody] UpdateRemarkRequest updates, [FromServices] IRemarksService remarksService)
+        {
+            await remarksService.UpdateRemark(remarkId, updates);
+            return ApiResponseHelper.Ok("Remark updated.", remarkId);
+        }
+
         [HttpDelete("{remarkId}")]
         [Authorize]
         [Produces("application/json")]

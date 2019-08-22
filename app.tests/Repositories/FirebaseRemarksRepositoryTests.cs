@@ -146,6 +146,50 @@ namespace LandmarkRemark.Api.Tests.Repositories
         }
 
         [Fact]
+        public async void UpdateRemark_Should_Call_IApiRequestProvider_CreatePatchRequest()
+        {
+            JObject content = null;
+            Dictionary<string, string> header = null;
+            Dictionary<string, string> query = null;
+            _requestProvider.CreatePatchRequest(Arg.Any<string>(), Arg.Do<JObject>(a => content = a), headers: Arg.Do<Dictionary<string, string>>(a => header = a), queries: Arg.Do<Dictionary<string, string>>(a => query = a));
+
+            var remarkId = "remarkId";
+            var updates = new UpdatableRemarkDetails
+            {
+                Remark = "remarks"
+            };
+            await _repository.UpdateRemark(remarkId, updates);
+
+            _requestProvider.Received(1).CreatePatchRequest($"{_firebaseDatabase}/{remarkId}", Arg.Any<JObject>(), headers: Arg.Any<Dictionary<string, string>>(), queries: Arg.Any<Dictionary<string, string>>());
+
+            content.Should().ContainKey("fields");
+            content.SelectToken("fields").Value<JObject>().Should().ContainKey("remark");
+            content.SelectToken("fields.remark").Value<JObject>().Should().ContainKey("stringValue");
+            content.SelectToken("fields.remark.stringValue").Value<string>().Should().Be(updates.Remark);
+
+            header.Should().ContainKey("Authorization");
+            header["Authorization"].Should().Be(_requestAuthorisation);
+
+            query.Should().ContainKey("key");
+            query["key"].Should().Be(_firebaseApiKey);
+            query["currentDocument.exists"].Should().Be("true");
+            query["updateMask.fieldPaths"].Should().Be("remark");
+        }
+
+        [Fact]
+        public async void UpdateRemark_Should_Call_IApiClient_Send()
+        {
+            var request = new HttpRequestMessage();
+            _requestProvider.CreatePatchRequest(Arg.Any<string>(), Arg.Any<JObject>(), Arg.Any<Dictionary<string, string>>(), Arg.Any<Dictionary<string, string>>()).Returns(request);
+
+            await _repository.UpdateRemark("remarkId", new UpdatableRemarkDetails());
+
+            await _apiClient.Received(1).Send<object>(request);
+
+            request.Dispose();
+        }
+
+        [Fact]
         public async void DeleteRemark_Should_Call_IApiRequestProvider_CreateDeleteRequest()
         {
             Dictionary<string, string> header = null;

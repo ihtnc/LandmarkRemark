@@ -12,6 +12,7 @@ namespace LandmarkRemark.Api.Http
     {
         HttpRequestMessage CreateGetRequest(string url, Dictionary<string, string> headers = null, Dictionary<string, string> queries = null);
         HttpRequestMessage CreatePostRequest<T>(string url, T content, Dictionary<string, string> headers = null, Dictionary<string, string> queries = null, Func<T, HttpContent> contentMapper = null);
+        HttpRequestMessage CreatePatchRequest<T>(string url, T content, Dictionary<string, string> headers = null, Dictionary<string, string> queries = null, Func<T, HttpContent> contentMapper = null);
         HttpRequestMessage CreateDeleteRequest(string url, Dictionary<string, string> headers = null, Dictionary<string, string> queries = null);
         HttpRequestMessage CreateRequest<T>(HttpMethod method, string url, Dictionary<string, string> headers = null, T content = default, Dictionary<string, string> queries = null, Func<T, HttpContent> contentMapper = null);
     }
@@ -26,6 +27,11 @@ namespace LandmarkRemark.Api.Http
         public HttpRequestMessage CreatePostRequest<T>(string url, T content, Dictionary<string, string> headers = null, Dictionary<string, string> queries = null, Func<T, HttpContent> contentMapper = null)
         {
             return CreateRequest<T>(HttpMethod.Post, url, headers: headers, content, queries: queries, contentMapper: contentMapper);
+        }
+
+        public HttpRequestMessage CreatePatchRequest<T>(string url, T content, Dictionary<string, string> headers = null, Dictionary<string, string> queries = null, Func<T, HttpContent> contentMapper = null)
+        {
+            return CreateRequest<T>(HttpMethod.Patch, url, headers: headers, content, queries: queries, contentMapper: contentMapper);
         }
 
         public HttpRequestMessage CreateDeleteRequest(string url, Dictionary<string, string> headers = null, Dictionary<string, string> queries = null)

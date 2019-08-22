@@ -126,6 +126,78 @@ namespace LandmarkRemark.Api.Tests.Controllers
         }
 
         [Fact]
+        public void UpdateRemark_Should_Include_HttpPatchAttribute()
+        {
+            var methodName = nameof(_controller.UpdateRemark);
+            var t = _controller.GetType();
+            t.GetMethod(methodName)
+                .Should().BeDecoratedWith<HttpPatchAttribute>()
+                .Which.Template.Should().Be("{remarkId}");
+        }
+
+        [Fact]
+        public void UpdateRemark_Should_Include_AuthorizeAttribute()
+        {
+            var methodName = nameof(_controller.UpdateRemark);
+            var t = _controller.GetType();
+            t.GetMethod(methodName).Should().BeDecoratedWith<AuthorizeAttribute>();
+        }
+
+        [Fact]
+        public void UpdateRemark_Should_Include_ProducesAttribute()
+        {
+            var methodName = nameof(_controller.UpdateRemark);
+            var t = _controller.GetType();
+            t.GetMethod(methodName)
+                .Should().BeDecoratedWith<ProducesAttribute>()
+                .Which.ContentTypes.Should().Contain("application/json");
+        }
+
+        [Theory]
+        [InlineData(StatusCodes.Status200OK, null)]
+        [InlineData(StatusCodes.Status400BadRequest, typeof(ApiResponse))]
+        [InlineData(StatusCodes.Status401Unauthorized, typeof(ApiResponse))]
+        [InlineData(StatusCodes.Status403Forbidden, typeof(ApiResponse))]
+        [InlineData(StatusCodes.Status500InternalServerError, typeof(ApiResponse))]
+        public void UpdateRemark_Should_Include_ProducesResponseTypeAttribute(int statusCode, Type responseType)
+        {
+            var methodName = nameof(_controller.UpdateRemark);
+            var t = _controller.GetType();
+            t.GetMethod(methodName).Should().BeDecoratedWith<ProducesResponseTypeAttribute>(attr => attr.StatusCode == statusCode && (responseType == null || attr.Type == responseType));
+        }
+
+        [Fact]
+        public async void UpdateRemark_Should_Call_IRemarksService_UpdateRemark()
+        {
+            var remarkId = "remarkId";
+            var service = Substitute.For<IRemarksService>();
+
+            var request = new UpdateRemarkRequest();
+            await _controller.UpdateRemark(remarkId, request, service);
+
+            await service.Received(1).UpdateRemark(remarkId, request);
+        }
+
+        [Fact]
+        public async void UpdateRemark_Should_Return_Correctly()
+        {
+            var remarkId = "remarkId";
+            var service = Substitute.For<IRemarksService>();
+
+            var actual = await _controller.UpdateRemark(remarkId, new UpdateRemarkRequest(), service);
+
+            actual.Should().BeOfType<ActionResult<ApiResponse>>();
+
+            actual.Result.Should().BeOfType<ObjectResult>();
+            actual.Result.As<ObjectResult>().StatusCode.Should().Be(StatusCodes.Status200OK);
+
+            actual.Result.As<ObjectResult>().Value.Should().BeOfType<ApiResponse>();
+            actual.Result.As<ObjectResult>().Value.As<ApiResponse>().Success.Should().Be(true);
+            actual.Result.As<ObjectResult>().Value.As<ApiResponse>().Message.Should().Be("Remark updated.");
+            actual.Result.As<ObjectResult>().Value.As<ApiResponse>().Data.Should().Be(remarkId);
+        }
+
+        [Fact]
         public void DeleteRemark_Should_Include_HttpDeleteAttribute()
         {
             var methodName = nameof(_controller.DeleteRemark);

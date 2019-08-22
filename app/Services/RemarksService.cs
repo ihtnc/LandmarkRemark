@@ -8,6 +8,7 @@ namespace LandmarkRemark.Api.Services
     public interface IRemarksService
     {
         Task<RemarkDetails> AddRemark(string userId, AddRemarkRequest request);
+        Task UpdateRemark(string remarkId, UpdateRemarkRequest request);
         Task DeleteRemark(string remarkId);
     }
 
@@ -27,6 +28,14 @@ namespace LandmarkRemark.Api.Services
                 UserId = userId,
                 Latitude = request.Latitude,
                 Longitude = request.Longitude,
+                Remark = request.Remark
+            });
+        }
+
+        public async Task UpdateRemark(string remarkId, UpdateRemarkRequest request)
+        {
+            await _repository.UpdateRemark(remarkId, new UpdatableRemarkDetails
+            {
                 Remark = request.Remark
             });
         }

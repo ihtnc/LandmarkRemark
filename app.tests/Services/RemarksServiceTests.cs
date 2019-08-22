@@ -1,5 +1,3 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
 using LandmarkRemark.Api.Models;
 using LandmarkRemark.Api.Repositories;
 using LandmarkRemark.Api.Repositories.Models;
@@ -54,6 +52,25 @@ namespace LandmarkRemark.Api.Tests.Services
             var actual = await _service.AddRemark("userId", new AddRemarkRequest());
 
             actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void UpdateRemark_Should_Call_IRemarksRepository_UpdateRemark()
+        {
+            var remarkId = "remarkId";
+            var request = new UpdateRemarkRequest
+            {
+                Remark = "remarks"
+            };
+
+            UpdatableRemarkDetails arg = null;
+            _repository.UpdateRemark(Arg.Any<string>(), Arg.Do<UpdatableRemarkDetails>(a => arg = a));
+
+            _service.UpdateRemark(remarkId, request);
+
+            _repository.Received(1).UpdateRemark(remarkId, Arg.Any<UpdatableRemarkDetails>());
+
+            arg.Remark.Should().Be(request.Remark);
         }
 
         [Fact]
