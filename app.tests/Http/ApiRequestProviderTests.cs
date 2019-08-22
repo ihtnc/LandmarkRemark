@@ -46,6 +46,19 @@ namespace LandmarkRemark.Api.Tests.Http
         }
 
         [Fact]
+        public void CreateDeleteRequest_Should_Set_HttpMethod_Correctly()
+        {
+            _provider.CreateDeleteRequest("https://google.com").Method.Should().Be(HttpMethod.Delete);
+        }
+
+        [Fact]
+        public void CreateDeleteRequest_Should_Set_HttpMethod_Correctly_Should_Set_Uri_Correctly()
+        {
+            var url = "https://google.com";
+            _provider.CreateDeleteRequest(url).RequestUri.OriginalString.Should().Be(url);
+        }
+
+        [Fact]
         public void CreateRequest_Should_Set_HttpMethod_Correctly()
         {
             var url = "https://google.com";
@@ -127,16 +140,9 @@ namespace LandmarkRemark.Api.Tests.Http
         }
 
         [Fact]
-        public void CreateRequest_Should_Not_Set_Content_If_Http_Get()
+        public void CreateRequest_Should_Not_Set_Content_If_Content_Is_Null()
         {
-            var requestObj = new
-            {
-                StringProp = "string",
-                IntProp = 123
-            };
-            var request = JToken.FromObject(requestObj);
-
-            var actual = _provider.CreateRequest(HttpMethod.Get, "https://google.com", content: request);
+            var actual = _provider.CreateRequest<object>(HttpMethod.Post, "https://google.com", content: null);
 
             actual.Content.Should().BeNull();
         }
