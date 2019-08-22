@@ -41,7 +41,7 @@ namespace LandmarkRemark.Api.Tests.Services
         [Fact]
         public async void AddRemark_Should_Call_IRemarksRepository_AddRemark()
         {
-            var userId = "userId";
+            var email = "email";
             var request = new AddRemarkRequest
             {
                 Latitude = 123,
@@ -52,11 +52,11 @@ namespace LandmarkRemark.Api.Tests.Services
             RemarkDetails arg = null;
             await _repository.AddRemark(Arg.Do<RemarkDetails>(a => arg = a));
 
-            await _service.AddRemark(userId, request);
+            await _service.AddRemark(email, request);
 
             await _repository.Received(1).AddRemark(Arg.Any<RemarkDetails>());
 
-            arg.UserId.Should().Be(userId);
+            arg.Email.Should().Be(email);
             arg.Latitude.Should().Be(request.Latitude);
             arg.Longitude.Should().Be(request.Longitude);
             arg.Remark.Should().Be(request.Remark);
@@ -68,7 +68,7 @@ namespace LandmarkRemark.Api.Tests.Services
             var expected = new RemarkDetails();
             _repository.AddRemark(Arg.Any<RemarkDetails>()).Returns(expected);
 
-            var actual = await _service.AddRemark("userId", new AddRemarkRequest());
+            var actual = await _service.AddRemark("email", new AddRemarkRequest());
 
             actual.Should().Be(expected);
         }

@@ -163,13 +163,13 @@ namespace LandmarkRemark.Api.Tests.Controllers
 
             var service = Substitute.For<IRemarksService>();
 
-            var userId = "userId";
+            var email = "email";
             var provider = Substitute.For<IUserDetailsProvider>();
-            provider.GetUserDetails().Returns(new UserDetails {UserId = userId});
+            provider.GetUserDetails().Returns(new UserDetails {Email = email});
 
             await _controller.AddRemark(request, service, provider);
 
-            await service.Received(1).AddRemark(userId, request);
+            await service.Received(1).AddRemark(email, request);
         }
 
         [Fact]

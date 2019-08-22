@@ -9,7 +9,7 @@ namespace LandmarkRemark.Api.Services
     public interface IRemarksService
     {
         Task<IEnumerable<RemarkDetails>> GetRemarks();
-        Task<RemarkDetails> AddRemark(string userId, AddRemarkRequest request);
+        Task<RemarkDetails> AddRemark(string email, AddRemarkRequest request);
         Task UpdateRemark(string remarkId, UpdateRemarkRequest request);
         Task DeleteRemark(string remarkId);
     }
@@ -28,11 +28,11 @@ namespace LandmarkRemark.Api.Services
             return await _repository.GetRemarks();
         }
 
-        public async Task<RemarkDetails> AddRemark(string userId, AddRemarkRequest request)
+        public async Task<RemarkDetails> AddRemark(string email, AddRemarkRequest request)
         {
             return await _repository.AddRemark(new RemarkDetails
             {
-                UserId = userId,
+                Email = email,
                 Latitude = request.Latitude,
                 Longitude = request.Longitude,
                 Remark = request.Remark

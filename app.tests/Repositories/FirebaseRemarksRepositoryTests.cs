@@ -69,7 +69,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
             content.SelectToken("structuredQuery.select.fields[2]").Value<JObject>().Should().ContainKey("fieldPath");
             content.SelectToken("structuredQuery.select.fields[2].fieldPath").Value<string>().Should().Be("remark");
             content.SelectToken("structuredQuery.select.fields[3]").Value<JObject>().Should().ContainKey("fieldPath");
-            content.SelectToken("structuredQuery.select.fields[3].fieldPath").Value<string>().Should().Be("uid");
+            content.SelectToken("structuredQuery.select.fields[3].fieldPath").Value<string>().Should().Be("email");
             content.SelectToken("structuredQuery").Value<JObject>().Should().ContainKey("from");
             content.SelectToken("structuredQuery.from").Value<JArray>().Should().HaveCount(1);
             content.SelectToken("structuredQuery.from[0]").Value<JObject>().Should().ContainKey("collectionId");
@@ -78,7 +78,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
             content.SelectToken("structuredQuery.orderBy").Value<JArray>().Should().HaveCount(1);
             content.SelectToken("structuredQuery.orderBy[0]").Value<JObject>().Should().ContainKey("field");
             content.SelectToken("structuredQuery.orderBy[0].field").Value<JObject>().Should().ContainKey("fieldPath");
-            content.SelectToken("structuredQuery.orderBy[0].field.fieldPath").Value<string>().Should().Be("uid");
+            content.SelectToken("structuredQuery.orderBy[0].field.fieldPath").Value<string>().Should().Be("email");
 
             header.Should().ContainKey("Authorization");
             header["Authorization"].Should().Be(_requestAuthorisation);
@@ -102,7 +102,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
                 Latitude = 123,
                 Longitude = 456,
                 Remark = "remarks",
-                UserId = "userId"
+                Email = "email"
             };
             var item = new JObject
             {
@@ -114,7 +114,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
                         ["lat"] = new JObject{ ["doubleValue"] = expected.Latitude },
                         ["lng"] = new JObject{ ["doubleValue"] = expected.Longitude },
                         ["remark"] = new JObject{ ["stringValue"] = expected.Remark },
-                        ["uid"] = new JObject{ ["stringValue"] = expected.UserId }
+                        ["email"] = new JObject{ ["stringValue"] = expected.Email }
                     }
                 }
             };
@@ -128,7 +128,51 @@ namespace LandmarkRemark.Api.Tests.Repositories
             actual.Single().Latitude.Should().Be(expected.Latitude);
             actual.Single().Longitude.Should().Be(expected.Longitude);
             actual.Single().Remark.Should().Be(expected.Remark);
-            actual.Single().UserId.Should().Be(expected.UserId);
+            actual.Single().Email.Should().Be(expected.Email);
+
+            request.Dispose();
+        }
+
+        [Fact]
+        public async void GetRemarks_Should_Exclude_Results_Without_Document()
+        {
+            Func<HttpResponseMessage, Task<IEnumerable<RemarkDetails>>> mapper = null;
+            var request = new HttpRequestMessage();
+            _requestProvider.CreatePostRequest(Arg.Any<string>(), Arg.Any<JObject>(), Arg.Any<Dictionary<string, string>>()).Returns(request);
+            await _apiClient.Send(Arg.Any<HttpRequestMessage>(), Arg.Do<Func<HttpResponseMessage, Task<IEnumerable<RemarkDetails>>>>(a => mapper = a));
+
+            await _repository.GetRemarks();
+
+            await _apiClient.Received(1).Send<IEnumerable<RemarkDetails>>(request, Arg.Any<Func<HttpResponseMessage, Task<IEnumerable<RemarkDetails>>>>());
+
+            var expected = new RemarkDetails
+            {
+                RemarkId = "remarkId",
+                Latitude = 123,
+                Longitude = 456,
+                Remark = "remarks",
+                Email = "email"
+            };
+            var item = new JObject
+            {
+                ["not_document"] = new JObject
+                {
+                    ["name"] = $"remarks/{expected.RemarkId}",
+                    ["fields"] = new JObject
+                    {
+                        ["lat"] = new JObject{ ["doubleValue"] = expected.Latitude },
+                        ["lng"] = new JObject{ ["doubleValue"] = expected.Longitude },
+                        ["remark"] = new JObject{ ["stringValue"] = expected.Remark },
+                        ["email"] = new JObject{ ["stringValue"] = expected.Email }
+                    }
+                }
+            };
+            var body = new JArray { item };
+
+            var response = new HttpResponseMessage();
+            response.Content = new StringContent(body.ToString());
+            var actual = await mapper(response);
+            actual.Should().BeEmpty();
 
             request.Dispose();
         }
@@ -161,7 +205,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
                 Latitude = 123,
                 Longitude = 456,
                 Remark = "remarks",
-                UserId = "userId"
+                Email = "email"
             };
             await _repository.AddRemark(details);
 
@@ -177,9 +221,9 @@ namespace LandmarkRemark.Api.Tests.Repositories
             content.SelectToken("fields").Value<JObject>().Should().ContainKey("remark");
             content.SelectToken("fields.remark").Value<JObject>().Should().ContainKey("stringValue");
             content.SelectToken("fields.remark.stringValue").Value<string>().Should().Be(details.Remark);
-            content.SelectToken("fields").Value<JObject>().Should().ContainKey("uid");
-            content.SelectToken("fields.uid").Value<JObject>().Should().ContainKey("stringValue");
-            content.SelectToken("fields.uid.stringValue").Value<string>().Should().Be(details.UserId);
+            content.SelectToken("fields").Value<JObject>().Should().ContainKey("email");
+            content.SelectToken("fields.email").Value<JObject>().Should().ContainKey("stringValue");
+            content.SelectToken("fields.email.stringValue").Value<string>().Should().Be(details.Email);
 
             header.Should().ContainKey("Authorization");
             header["Authorization"].Should().Be(_requestAuthorisation);
@@ -206,7 +250,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
                 Latitude = 123,
                 Longitude = 456,
                 Remark = "remarks",
-                UserId = "userId"
+                Email = "email"
             };
             var body = new JObject
             {
@@ -216,7 +260,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
                     ["lat"] = new JObject{ ["doubleValue"] = expected.Latitude },
                     ["lng"] = new JObject{ ["doubleValue"] = expected.Longitude },
                     ["remark"] = new JObject{ ["stringValue"] = expected.Remark },
-                    ["uid"] = new JObject{ ["stringValue"] = expected.UserId }
+                    ["email"] = new JObject{ ["stringValue"] = expected.Email }
                 }
             };
 
@@ -227,7 +271,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
             actual.Latitude.Should().Be(expected.Latitude);
             actual.Longitude.Should().Be(expected.Longitude);
             actual.Remark.Should().Be(expected.Remark);
-            actual.UserId.Should().Be(expected.UserId);
+            actual.Email.Should().Be(expected.Email);
 
             request.Dispose();
         }

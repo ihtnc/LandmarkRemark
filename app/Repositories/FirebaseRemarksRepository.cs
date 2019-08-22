@@ -112,7 +112,7 @@ namespace LandmarkRemark.Api.Repositories
                     new JObject { ["fieldPath"] = "lat" },
                     new JObject { ["fieldPath"] = "lng" },
                     new JObject { ["fieldPath"] = "remark" },
-                    new JObject { ["fieldPath"] = "uid" }
+                    new JObject { ["fieldPath"] = "email" }
                 }
             };
 
@@ -125,7 +125,7 @@ namespace LandmarkRemark.Api.Repositories
             {
                 new JObject
                 {
-                    ["field"] = new JObject { ["fieldPath"] = "uid" }
+                    ["field"] = new JObject { ["fieldPath"] = "email" }
                 }
             };
 
@@ -151,7 +151,7 @@ namespace LandmarkRemark.Api.Repositories
                     ["lat"] = new JObject{ ["doubleValue"] = remark.Latitude },
                     ["lng"] = new JObject{ ["doubleValue"] = remark.Longitude },
                     ["remark"] = new JObject{ ["stringValue"] = remark.Remark },
-                    ["uid"] = new JObject{ ["stringValue"] = remark.UserId }
+                    ["email"] = new JObject{ ["stringValue"] = remark.Email }
                 }
             };
         }
@@ -173,6 +173,8 @@ namespace LandmarkRemark.Api.Repositories
             foreach(var item in content)
             {
                 var document = item.SelectToken("document");
+                if(document == null) { continue; }
+
                 var obj = GetRemarkDetailsResponse(document);
                 list.Add(obj);
             }
@@ -190,7 +192,7 @@ namespace LandmarkRemark.Api.Repositories
                 Latitude = content.SelectToken("fields.lat.doubleValue").Value<double>(),
                 Longitude = content.SelectToken("fields.lng.doubleValue").Value<double>(),
                 Remark = content.SelectToken("fields.remark.stringValue").Value<string>(),
-                UserId = content.SelectToken("fields.uid.stringValue").Value<string>()
+                Email = content.SelectToken("fields.email.stringValue").Value<string>()
             };
         }
     }

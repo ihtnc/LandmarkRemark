@@ -38,7 +38,7 @@ namespace LandmarkRemark.Api.Controllers
         public async Task<ActionResult<ApiResponse>> AddRemark([FromBody] AddRemarkRequest remark, [FromServices] IRemarksService remarksService, [FromServices] IUserDetailsProvider userDetailsProvider)
         {
             var userDetails = userDetailsProvider.GetUserDetails();
-            var response = await remarksService.AddRemark(userDetails.UserId, remark);
+            var response = await remarksService.AddRemark(userDetails.Email, remark);
             return ApiResponseHelper.Created("Remark created.", response);
         }
 
