@@ -50,15 +50,33 @@ namespace LandmarkRemark.Api.Repositories
             };
         }
 
-        public async Task<RemarkDetails> AddRemark(RemarkDetails remark)
+        public async Task<IEnumerable<RemarkDetails>> GetRemarks()
         {
-            var content = CreateAddRemarkRequest(remark);
+            var url = $"{_config.Database.TrimEnd('/')}:runQuery";
+            var content = CreateGetRemarksRequest();
 
-            var request = _requestProvider.CreatePostRequest(_config.Database, content, headers: _defaultHeader, queries: _defaultQuery);
+            var request = _requestProvider.CreatePostRequest(url, content, headers: _defaultHeader);
             var response = await _apiClient.Send(request, async resp =>
             {
                 var body = await resp.Content.ReadAsStringAsync();
-                return GetRemarkDetailsResponse(body);
+                var obj = JArray.Parse(body);
+                return GetRemarkDetailsArrayResponse(obj);
+            });
+
+            return response;
+        }
+
+        public async Task<RemarkDetails> AddRemark(RemarkDetails remark)
+        {
+            var url = $"{_config.Database.TrimEnd('/')}/remarks";
+            var content = CreateAddRemarkRequest(remark);
+
+            var request = _requestProvider.CreatePostRequest(url, content, headers: _defaultHeader, queries: _defaultQuery);
+            var response = await _apiClient.Send(request, async resp =>
+            {
+                var body = await resp.Content.ReadAsStringAsync();
+                var obj = JToken.Parse(body);
+                return GetRemarkDetailsResponse(obj);
             });
 
             return response;
@@ -66,7 +84,7 @@ namespace LandmarkRemark.Api.Repositories
 
         public async Task UpdateRemark(string remarkId, UpdatableRemarkDetails updates)
         {
-            var url = $"{_config.Database.TrimEnd('/')}/{remarkId}";
+            var url = $"{_config.Database.TrimEnd('/')}/remarks/{remarkId}";
             var content = CreateUpdateRemarkRequest(updates);
 
             var updateQuery = new Dictionary<string, string>(_defaultQuery);
@@ -79,10 +97,49 @@ namespace LandmarkRemark.Api.Repositories
 
         public async Task DeleteRemark(string remarkId)
         {
-            var url = $"{_config.Database.TrimEnd('/')}/{remarkId}";
+            var url = $"{_config.Database.TrimEnd('/')}/remarks/{remarkId}";
 
             var request = _requestProvider.CreateDeleteRequest(url, headers: _defaultHeader, queries: _defaultQuery);
             await _apiClient.Send<object>(request);
+        }
+
+        private JObject CreateGetRemarksRequest()
+        {
+            var select = new JObject
+            {
+                ["fields"] = new JArray
+                {
+                    new JObject { ["fieldPath"] = "lat" },
+                    new JObject { ["fieldPath"] = "lng" },
+                    new JObject { ["fieldPath"] = "remark" },
+                    new JObject { ["fieldPath"] = "uid" }
+                }
+            };
+
+            var from = new JArray
+            {
+                new JObject { ["collectionId"] = "remarks" }
+            };
+
+            var orderBy = new JArray
+            {
+                new JObject
+                {
+                    ["field"] = new JObject { ["fieldPath"] = "uid" }
+                }
+            };
+
+            var query = new JObject
+            {
+                ["structuredQuery"] = new JObject
+                {
+                    ["select"] = select,
+                    ["from"] = from,
+                    ["orderBy"] = orderBy
+                }
+            };
+
+            return query;
         }
 
         private JObject CreateAddRemarkRequest(RemarkDetails remark)
@@ -110,19 +167,30 @@ namespace LandmarkRemark.Api.Repositories
             };
         }
 
-        private RemarkDetails GetRemarkDetailsResponse(string content)
+        private IEnumerable<RemarkDetails> GetRemarkDetailsArrayResponse(JArray content)
         {
-            var obj = JToken.Parse(content);
-            var name = obj.Value<string>("name");
+            var list = new List<RemarkDetails>();
+            foreach(var item in content)
+            {
+                var document = item.SelectToken("document");
+                var obj = GetRemarkDetailsResponse(document);
+                list.Add(obj);
+            }
+
+            return list;
+        }
+        private RemarkDetails GetRemarkDetailsResponse(JToken content)
+        {
+            var name = content.Value<string>("name");
             var id = name.Split("/", StringSplitOptions.RemoveEmptyEntries).Last();
 
             return new RemarkDetails
             {
                 RemarkId = id,
-                Latitude = obj.SelectToken("fields.lat.doubleValue").Value<double>(),
-                Longitude = obj.SelectToken("fields.lng.doubleValue").Value<double>(),
-                Remark = obj.SelectToken("fields.remark.stringValue").Value<string>(),
-                UserId = obj.SelectToken("fields.uid.stringValue").Value<string>()
+                Latitude = content.SelectToken("fields.lat.doubleValue").Value<double>(),
+                Longitude = content.SelectToken("fields.lng.doubleValue").Value<double>(),
+                Remark = content.SelectToken("fields.remark.stringValue").Value<string>(),
+                UserId = content.SelectToken("fields.uid.stringValue").Value<string>()
             };
         }
     }

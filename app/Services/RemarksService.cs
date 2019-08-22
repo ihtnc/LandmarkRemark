@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LandmarkRemark.Api.Models;
 using LandmarkRemark.Api.Repositories;
@@ -7,6 +8,7 @@ namespace LandmarkRemark.Api.Services
 {
     public interface IRemarksService
     {
+        Task<IEnumerable<RemarkDetails>> GetRemarks();
         Task<RemarkDetails> AddRemark(string userId, AddRemarkRequest request);
         Task UpdateRemark(string remarkId, UpdateRemarkRequest request);
         Task DeleteRemark(string remarkId);
@@ -19,6 +21,11 @@ namespace LandmarkRemark.Api.Services
         public RemarksService(IRemarksRepository repository)
         {
             _repository = repository;
+        }
+
+        public async Task<IEnumerable<RemarkDetails>> GetRemarks()
+        {
+            return await _repository.GetRemarks();
         }
 
         public async Task<RemarkDetails> AddRemark(string userId, AddRemarkRequest request)

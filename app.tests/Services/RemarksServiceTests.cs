@@ -20,7 +20,26 @@ namespace LandmarkRemark.Api.Tests.Services
         }
 
         [Fact]
-        public void AddRemark_Should_Call_IRemarksRepository_AddRemark()
+        public async void GetRemarks_Should_Call_IRemarksRepository_GetRemarks()
+        {
+            await _service.GetRemarks();
+
+            await _repository.Received(1).GetRemarks();
+        }
+
+        [Fact]
+        public async void GetRemarks_Should_Return_Correctly()
+        {
+            var expected = new [] { new RemarkDetails() };
+            _repository.GetRemarks().Returns(expected);
+
+            var actual = await _service.GetRemarks();
+
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public async void AddRemark_Should_Call_IRemarksRepository_AddRemark()
         {
             var userId = "userId";
             var request = new AddRemarkRequest
@@ -31,11 +50,11 @@ namespace LandmarkRemark.Api.Tests.Services
             };
 
             RemarkDetails arg = null;
-            _repository.AddRemark(Arg.Do<RemarkDetails>(a => arg = a));
+            await _repository.AddRemark(Arg.Do<RemarkDetails>(a => arg = a));
 
-            _service.AddRemark(userId, request);
+            await _service.AddRemark(userId, request);
 
-            _repository.Received(1).AddRemark(Arg.Any<RemarkDetails>());
+            await _repository.Received(1).AddRemark(Arg.Any<RemarkDetails>());
 
             arg.UserId.Should().Be(userId);
             arg.Latitude.Should().Be(request.Latitude);
@@ -55,7 +74,7 @@ namespace LandmarkRemark.Api.Tests.Services
         }
 
         [Fact]
-        public void UpdateRemark_Should_Call_IRemarksRepository_UpdateRemark()
+        public async void UpdateRemark_Should_Call_IRemarksRepository_UpdateRemark()
         {
             var remarkId = "remarkId";
             var request = new UpdateRemarkRequest
@@ -64,11 +83,11 @@ namespace LandmarkRemark.Api.Tests.Services
             };
 
             UpdatableRemarkDetails arg = null;
-            _repository.UpdateRemark(Arg.Any<string>(), Arg.Do<UpdatableRemarkDetails>(a => arg = a));
+            await _repository.UpdateRemark(Arg.Any<string>(), Arg.Do<UpdatableRemarkDetails>(a => arg = a));
 
-            _service.UpdateRemark(remarkId, request);
+            await _service.UpdateRemark(remarkId, request);
 
-            _repository.Received(1).UpdateRemark(remarkId, Arg.Any<UpdatableRemarkDetails>());
+            await _repository.Received(1).UpdateRemark(remarkId, Arg.Any<UpdatableRemarkDetails>());
 
             arg.Remark.Should().Be(request.Remark);
         }

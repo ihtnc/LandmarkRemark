@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,20 @@ namespace LandmarkRemark.Api.Controllers
     [ApiController]
     public class RemarksController : ControllerBase
     {
+
+        [HttpGet]
+        [Authorize]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ApiResponse>> GetRemarks([FromServices] IRemarksService remarksService)
+        {
+            var response = await remarksService.GetRemarks();
+            return ApiResponseHelper.Ok($"{response.Count()} remark(s) found.", response);
+        }
+
         [HttpPost]
         [Authorize]
         [Produces("application/json")]

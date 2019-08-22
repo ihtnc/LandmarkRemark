@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -47,6 +48,107 @@ namespace LandmarkRemark.Api.Tests.Repositories
         }
 
         [Fact]
+        public async void GetRemarks_Should_Call_IApiRequestProvider_CreatePostRequest()
+        {
+            JObject content = null;
+            Dictionary<string, string> header = null;
+            _requestProvider.CreatePostRequest(Arg.Any<string>(), Arg.Do<JObject>(a => content = a), headers: Arg.Do<Dictionary<string, string>>(a => header = a));
+
+            await _repository.GetRemarks();
+
+            _requestProvider.Received(1).CreatePostRequest($"{_firebaseDatabase}:runQuery", Arg.Any<JObject>(), headers: Arg.Any<Dictionary<string, string>>());
+
+            content.Should().ContainKey("structuredQuery");
+            content.SelectToken("structuredQuery").Value<JObject>().Should().ContainKey("select");
+            content.SelectToken("structuredQuery.select").Value<JObject>().Should().ContainKey("fields");
+            content.SelectToken("structuredQuery.select.fields").Value<JArray>().Should().HaveCount(4);
+            content.SelectToken("structuredQuery.select.fields[0]").Value<JObject>().Should().ContainKey("fieldPath");
+            content.SelectToken("structuredQuery.select.fields[0].fieldPath").Value<string>().Should().Be("lat");
+            content.SelectToken("structuredQuery.select.fields[1]").Value<JObject>().Should().ContainKey("fieldPath");
+            content.SelectToken("structuredQuery.select.fields[1].fieldPath").Value<string>().Should().Be("lng");
+            content.SelectToken("structuredQuery.select.fields[2]").Value<JObject>().Should().ContainKey("fieldPath");
+            content.SelectToken("structuredQuery.select.fields[2].fieldPath").Value<string>().Should().Be("remark");
+            content.SelectToken("structuredQuery.select.fields[3]").Value<JObject>().Should().ContainKey("fieldPath");
+            content.SelectToken("structuredQuery.select.fields[3].fieldPath").Value<string>().Should().Be("uid");
+            content.SelectToken("structuredQuery").Value<JObject>().Should().ContainKey("from");
+            content.SelectToken("structuredQuery.from").Value<JArray>().Should().HaveCount(1);
+            content.SelectToken("structuredQuery.from[0]").Value<JObject>().Should().ContainKey("collectionId");
+            content.SelectToken("structuredQuery.from[0].collectionId").Value<string>().Should().Be("remarks");
+            content.SelectToken("structuredQuery").Value<JObject>().Should().ContainKey("orderBy");
+            content.SelectToken("structuredQuery.orderBy").Value<JArray>().Should().HaveCount(1);
+            content.SelectToken("structuredQuery.orderBy[0]").Value<JObject>().Should().ContainKey("field");
+            content.SelectToken("structuredQuery.orderBy[0].field").Value<JObject>().Should().ContainKey("fieldPath");
+            content.SelectToken("structuredQuery.orderBy[0].field.fieldPath").Value<string>().Should().Be("uid");
+
+            header.Should().ContainKey("Authorization");
+            header["Authorization"].Should().Be(_requestAuthorisation);
+        }
+
+        [Fact]
+        public async void GetRemarks_Should_Call_IApiClient_Send()
+        {
+            Func<HttpResponseMessage, Task<IEnumerable<RemarkDetails>>> mapper = null;
+            var request = new HttpRequestMessage();
+            _requestProvider.CreatePostRequest(Arg.Any<string>(), Arg.Any<JObject>(), Arg.Any<Dictionary<string, string>>()).Returns(request);
+            await _apiClient.Send(Arg.Any<HttpRequestMessage>(), Arg.Do<Func<HttpResponseMessage, Task<IEnumerable<RemarkDetails>>>>(a => mapper = a));
+
+            await _repository.GetRemarks();
+
+            await _apiClient.Received(1).Send<IEnumerable<RemarkDetails>>(request, Arg.Any<Func<HttpResponseMessage, Task<IEnumerable<RemarkDetails>>>>());
+
+            var expected = new RemarkDetails
+            {
+                RemarkId = "remarkId",
+                Latitude = 123,
+                Longitude = 456,
+                Remark = "remarks",
+                UserId = "userId"
+            };
+            var item = new JObject
+            {
+                ["document"] = new JObject
+                {
+                    ["name"] = $"remarks/{expected.RemarkId}",
+                    ["fields"] = new JObject
+                    {
+                        ["lat"] = new JObject{ ["doubleValue"] = expected.Latitude },
+                        ["lng"] = new JObject{ ["doubleValue"] = expected.Longitude },
+                        ["remark"] = new JObject{ ["stringValue"] = expected.Remark },
+                        ["uid"] = new JObject{ ["stringValue"] = expected.UserId }
+                    }
+                }
+            };
+            var body = new JArray { item };
+
+            var response = new HttpResponseMessage();
+            response.Content = new StringContent(body.ToString());
+            var actual = await mapper(response);
+            actual.Should().HaveCount(1);
+            actual.Single().RemarkId.Should().Be(expected.RemarkId);
+            actual.Single().Latitude.Should().Be(expected.Latitude);
+            actual.Single().Longitude.Should().Be(expected.Longitude);
+            actual.Single().Remark.Should().Be(expected.Remark);
+            actual.Single().UserId.Should().Be(expected.UserId);
+
+            request.Dispose();
+        }
+
+        [Fact]
+        public async void GetRemarks_Should_Return_Correctly()
+        {
+            var request = new HttpRequestMessage();
+            _requestProvider.CreatePostRequest(Arg.Any<string>(), Arg.Any<JObject>(), Arg.Any<Dictionary<string, string>>()).Returns(request);
+
+            var response = new [] { new RemarkDetails() };
+            _apiClient.Send(Arg.Any<HttpRequestMessage>(), Arg.Any<Func<HttpResponseMessage, Task<IEnumerable<RemarkDetails>>>>()).Returns(response);
+
+            var actual = await _repository.GetRemarks();
+            actual.Should().BeSameAs(response);
+
+            request.Dispose();
+        }
+
+        [Fact]
         public async void AddRemark_Should_Call_IApiRequestProvider_CreatePostRequest()
         {
             JObject content = null;
@@ -63,7 +165,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
             };
             await _repository.AddRemark(details);
 
-            _requestProvider.Received(1).CreatePostRequest(_firebaseDatabase, Arg.Any<JObject>(), headers: Arg.Any<Dictionary<string, string>>(), queries: Arg.Any<Dictionary<string, string>>());
+            _requestProvider.Received(1).CreatePostRequest($"{_firebaseDatabase}/remarks", Arg.Any<JObject>(), headers: Arg.Any<Dictionary<string, string>>(), queries: Arg.Any<Dictionary<string, string>>());
 
             content.Should().ContainKey("fields");
             content.SelectToken("fields").Value<JObject>().Should().ContainKey("lat");
@@ -160,7 +262,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
             };
             await _repository.UpdateRemark(remarkId, updates);
 
-            _requestProvider.Received(1).CreatePatchRequest($"{_firebaseDatabase}/{remarkId}", Arg.Any<JObject>(), headers: Arg.Any<Dictionary<string, string>>(), queries: Arg.Any<Dictionary<string, string>>());
+            _requestProvider.Received(1).CreatePatchRequest($"{_firebaseDatabase}/remarks/{remarkId}", Arg.Any<JObject>(), headers: Arg.Any<Dictionary<string, string>>(), queries: Arg.Any<Dictionary<string, string>>());
 
             content.Should().ContainKey("fields");
             content.SelectToken("fields").Value<JObject>().Should().ContainKey("remark");
@@ -199,7 +301,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
             var remarkId = "remarkId";
             await _repository.DeleteRemark(remarkId);
 
-            _requestProvider.Received(1).CreateDeleteRequest($"{_firebaseDatabase}/{remarkId}", headers: Arg.Any<Dictionary<string, string>>(), queries: Arg.Any<Dictionary<string, string>>());
+            _requestProvider.Received(1).CreateDeleteRequest($"{_firebaseDatabase}/remarks/{remarkId}", headers: Arg.Any<Dictionary<string, string>>(), queries: Arg.Any<Dictionary<string, string>>());
 
             header.Should().ContainKey("Authorization");
             header["Authorization"].Should().Be(_requestAuthorisation);

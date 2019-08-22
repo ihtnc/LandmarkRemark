@@ -1,4 +1,6 @@
+using System.Linq;
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +36,74 @@ namespace LandmarkRemark.Api.Tests.Controllers
         {
             var t = _controller.GetType();
             t.Should().BeDecoratedWith<RouteAttribute>(attr => attr.Template == "api/[controller]");
+        }
+
+        [Fact]
+        public void GetRemarks_Should_Include_HttpGetAttribute()
+        {
+            var methodName = nameof(_controller.GetRemarks);
+            var t = _controller.GetType();
+            t.GetMethod(methodName).Should().BeDecoratedWith<HttpGetAttribute>();
+        }
+
+        [Fact]
+        public void GetRemarks_Should_Include_AuthorizeAttribute()
+        {
+            var methodName = nameof(_controller.GetRemarks);
+            var t = _controller.GetType();
+            t.GetMethod(methodName).Should().BeDecoratedWith<AuthorizeAttribute>();
+        }
+
+        [Fact]
+        public void GetRemarks_Should_Include_ProducesAttribute()
+        {
+            var methodName = nameof(_controller.GetRemarks);
+            var t = _controller.GetType();
+            t.GetMethod(methodName)
+                .Should().BeDecoratedWith<ProducesAttribute>()
+                .Which.ContentTypes.Should().Contain("application/json");
+        }
+
+        [Theory]
+        [InlineData(StatusCodes.Status200OK, null)]
+        [InlineData(StatusCodes.Status401Unauthorized, typeof(ApiResponse))]
+        [InlineData(StatusCodes.Status403Forbidden, typeof(ApiResponse))]
+        [InlineData(StatusCodes.Status500InternalServerError, typeof(ApiResponse))]
+        public void GetRemarks_Should_Include_ProducesResponseTypeAttribute(int statusCode, Type responseType)
+        {
+            var methodName = nameof(_controller.GetRemarks);
+            var t = _controller.GetType();
+            t.GetMethod(methodName).Should().BeDecoratedWith<ProducesResponseTypeAttribute>(attr => attr.StatusCode == statusCode && (responseType == null || attr.Type == responseType));
+        }
+
+        [Fact]
+        public async void GetRemarks_Should_Call_IRemarksService_GetRemarks()
+        {
+            var service = Substitute.For<IRemarksService>();
+
+            await _controller.GetRemarks(service);
+
+            await service.Received(1).GetRemarks();
+        }
+
+        [Fact]
+        public async void GetRemarks_Should_Return_Correctly()
+        {
+            IEnumerable<RemarkDetails> response = new [] { new RemarkDetails() };
+            var service = Substitute.For<IRemarksService>();
+            service.GetRemarks().Returns(response);
+
+            var actual = await _controller.GetRemarks(service);
+
+            actual.Should().BeOfType<ActionResult<ApiResponse>>();
+
+            actual.Result.Should().BeOfType<ObjectResult>();
+            actual.Result.As<ObjectResult>().StatusCode.Should().Be(StatusCodes.Status200OK);
+
+            actual.Result.As<ObjectResult>().Value.Should().BeOfType<ApiResponse>();
+            actual.Result.As<ObjectResult>().Value.As<ApiResponse>().Success.Should().Be(true);
+            actual.Result.As<ObjectResult>().Value.As<ApiResponse>().Message.Should().Be($"{response.Count()} remark(s) found.");
+            actual.Result.As<ObjectResult>().Value.As<ApiResponse>().Data.Should().Be(response);
         }
 
         [Fact]
