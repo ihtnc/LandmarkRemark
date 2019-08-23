@@ -1,5 +1,5 @@
 import React from 'react';
-import LandmarkMap from './landmarkmap';
+import LandmarkMap from './landmarkMapComponent';
 import Wrapper from '@styles/wrapper';
 
 const App = () => (

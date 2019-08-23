@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`LandmarkMap component should match latest snapshot 1`] = `<DefaultLoadingContainer />`;

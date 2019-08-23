@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RemarkComponent should render correctly when editable 1`] = `
+<styled.div>
+  <styled.div>
+    email@address
+    :
+  </styled.div>
+  <styled.input
+    onChange={[Function]}
+    value="remark"
+  />
+  <styled.span
+    error={false}
+    show={false}
+  />
+  <styled.div>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      Save
+    </styled.button>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      Delete
+    </styled.button>
+  </styled.div>
+</styled.div>
+`;
+
+exports[`RemarkComponent should render correctly when new 1`] = `
+<styled.div>
+  <styled.div>
+    email@address
+    :
+  </styled.div>
+  <styled.input
+    onChange={[Function]}
+    value="remark"
+  />
+  <styled.span
+    error={false}
+    show={false}
+  />
+  <styled.div>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      Save
+    </styled.button>
+  </styled.div>
+</styled.div>
+`;
+
+exports[`RemarkComponent should render correctly when not editable 1`] = `
+<styled.div>
+  <styled.div>
+    email@address
+    :
+  </styled.div>
+  <styled.div>
+    remark
+  </styled.div>
+  <styled.span
+    error={false}
+    show={false}
+  />
+</styled.div>
+`;

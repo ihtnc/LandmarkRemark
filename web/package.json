@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "axios": "^0.19.0",
     "google-maps-react": "^2.0.2",
     "npm": "^6.11.1",
     "react": "^16.9.0",
@@ -40,10 +41,11 @@
   "jest": {
     "moduleNameMapper": {
       "@src(.*)$": "<rootDir>/src/$1",
+      "@api(.*)$": "<rootDir>/src/api/$1",
       "@components(.*)$": "<rootDir>/src/components/$1",
       "@styles(.*)$": "<rootDir>/src/styles/$1"
     },
-    "setupTestFrameworkScriptFile": "<rootDir>/__tests__/_setup.js",
+    "setupFilesAfterEnv": ["<rootDir>/__tests__/_setup.js"],
     "testPathIgnorePatterns": [
       "<rootDir>/__tests__/_setup.js"
     ],

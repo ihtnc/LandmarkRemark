@@ -35,6 +35,7 @@ namespace LandmarkRemark.Api
             services.AddDependencies();
 
             services
+                .AddCors()
                 .AddMvc(config =>
                 {
                     config.Filters.Add(new AuthoriseFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
@@ -58,11 +59,16 @@ namespace LandmarkRemark.Api
                 app.UseHsts();
             }
 
+            app.UseCors(builder =>
+                builder.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowCredentials());
+
             app.UseApiDocumentation();
 
             app.UseAuthentication();
 
-            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

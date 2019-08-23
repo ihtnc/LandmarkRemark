@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import LandmarkMap from "@src/components/landmarkmap";
+import LandmarkMap from "@components/landmarkMapComponent";
 
-describe("LandmarkMap component", () => {
+describe("LandmarkMapComponent", () => {
   test("should match latest snapshot", () => {
     const wrapper = shallow(<LandmarkMap />)
     expect(wrapper).toMatchSnapshot();

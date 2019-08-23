@@ -1,0 +1,132 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import {
+  RemarkWrapper,
+  RemarkHeader,
+  RemarkStatus,
+  RemarkLabel,
+  RemarkInput,
+  RemarkButtonWrapper,
+  RemarkButton
+} from '@styles/remark';
+
+import ApiClient from '@api/apiClient';
+
+class RemarkComponent extends Component {
+  state = {};
+
+  static propTypes = {
+    data: PropTypes.object,
+    editable: PropTypes.bool,
+    new: PropTypes.bool,
+    onAction: PropTypes.func
+  }
+
+  static defaultProps = {
+    data: { },
+    editable: false,
+    new: false,
+    onAction: (data, action) => {}
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      remark: props.data.remark || '',
+      remarkId: props.data.remarkId,
+      busy: false,
+      error: false,
+      status: ''
+    };
+  }
+
+  onSaveClick = () => {
+    this.showBusy();
+
+    const task = this.props.new
+      ? ApiClient.addRemark({
+          latitude: this.props.data.latitude,
+          longitude: this.props.data.longitude,
+          remark: this.state.remark
+        })
+      : ApiClient.updateRemark(this.state.remarkId, this.state.remark);
+
+    task.then(res => {
+      if(this.props.new) {
+        const data = res.data.data;
+        this.props.onAction(data, 'insert');
+      } else {
+        const data = this.props.data;
+        data.remark = this.state.remark;
+        this.props.onAction(data, 'update');
+      }
+    })
+    .catch(error => {
+      this.showError(error.message);
+    });
+  }
+
+  onDeleteClick = () => {
+    this.showBusy();
+
+    ApiClient.deleteRemark(this.state.remarkId)
+      .then(res => {
+        const data = this.props.data;
+        this.props.onAction(data, 'delete');
+      })
+      .catch(error => {
+        this.showError(error.message);
+      });
+  }
+
+  onRemarkChange = (event) => {
+    this.setState({remark: event.target.value});
+  }
+
+  showBusy() {
+    this.setState({
+      busy: true,
+      status: 'Please wait...',
+      error: false
+    });
+  }
+
+  showError(message) {
+    this.setState({
+      error: true,
+      status: message
+    });
+  }
+
+  isReadonly() {
+    return !this.props.editable && !this.props.new;
+  }
+
+  showStatus() {
+    return this.state.busy || this.state.error;
+  }
+
+  render() {
+    return (
+      <RemarkWrapper>
+        <RemarkHeader>{this.props.data.email}:</RemarkHeader>
+        {this.isReadonly()
+          ? (<RemarkLabel>{this.props.data.remark}</RemarkLabel>)
+          : (<RemarkInput value={this.state.remark} onChange={this.onRemarkChange} />)}
+
+        <RemarkStatus show={this.showStatus()} error={this.state.error}>{this.state.status}</RemarkStatus>
+
+        {!this.isReadonly() && (
+          <RemarkButtonWrapper>
+            <RemarkButton onClick={this.onSaveClick} disabled={this.state.busy}>Save</RemarkButton>
+            {!this.props.new && (<RemarkButton onClick={this.onDeleteClick} disabled={this.state.busy}>Delete</RemarkButton>)}
+          </RemarkButtonWrapper>
+        )}
+      </RemarkWrapper>
+    );
+  }
+}
+
+export default RemarkComponent;
