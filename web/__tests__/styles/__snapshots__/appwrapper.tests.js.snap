@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Wrapper styled component should match latest snapshot 1`] = `
+exports[`AppWrapper styled component should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
     Object {

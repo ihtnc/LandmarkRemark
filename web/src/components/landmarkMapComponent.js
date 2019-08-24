@@ -1,46 +1,33 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
 import config from '@src/config';
 import session from '@src/session';
 
-import ApiClient from '@api/apiClient';
-
 import Remark from './remarkComponent';
 import InterActiveInfoWindow from './interactiveInfoWindow';
 
-class LandmarkMapComponent extends Component {
+class LandmarkMapComponent extends PureComponent {
   state = {
     activeMarker: {},
-    remarks: [],
     newMarker: null
   };
 
   static propTypes = {
     center: PropTypes.object,
-    zoom: PropTypes.number
+    zoom: PropTypes.number,
+    remarks: PropTypes.array
   }
 
   static defaultProps = {
     center: { lat: -33.856762, lng: 151.215295 }, //Sydney Opera House
-    zoom: 17
+    zoom: 17,
+    remarks: null
   }
 
   constructor(props) {
     super(props);
-  }
-
-  componentDidMount() {
-    ApiClient
-      .getRemarks()
-      .then(res => {
-        this.setState({ remarks: res.data.data });
-      })
-      .catch(error => {
-        console.log(error.message);
-        this.setState({ remarks: [] });
-      });
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -70,6 +57,10 @@ class LandmarkMapComponent extends Component {
   };
 
   onMapDblClick = (ref, map, ev) => {
+    if(!this.props.remarks) { return; }
+
+    const user = session.getUser();
+
     // initialise a new marker
     this.setState({
       activeMarker: null,
@@ -77,7 +68,7 @@ class LandmarkMapComponent extends Component {
         data: {
           latitude: ev.latLng.lat(),
           longitude: ev.latLng.lng(),
-          email: session.email
+          email: user.email
         },
         position: ev.latLng
       }
@@ -96,19 +87,12 @@ class LandmarkMapComponent extends Component {
 
   onRemarkAction = (data, action) => {
     if(action=='insert') {
-      // append newly created remark to state
-      const updated = this.state.remarks.concat(data);
-      this.setState({
-        remarks: updated
-      });
+      // append newly created remark to props
+      this.props.remarks.push(data);
     } else if(action=='delete') {
       // remove deleted remark from state
-      const index = this.state.remarks.indexOf(data);
-      const copy = Object.assign([], this.state.remarks);
-      copy.splice(index, 1);
-      this.setState({
-        remarks: copy
-      });
+      const index = this.props.remarks.indexOf(data);
+      this.props.remarks.splice(index, 1);
     }
     // updated remark already gets updated in the state so no further action needed here
 
@@ -126,14 +110,15 @@ class LandmarkMapComponent extends Component {
     const isActive = this.state.activeMarker && this.state.activeMarker.data && this.state.activeMarker.data.remarkId == remarkId;
     if(isActive) { return 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'; }
 
-    const isAuthor = session.email == email;
+    const user = session.getUser();
+    const isAuthor = user.email == email;
     if(isAuthor) { return 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'; }
 
     return 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
   }
 
-  renderMarkers() {
-    return this.state.remarks && this.state.remarks.map(r => (
+  renderMarkers(list) {
+    return list && list.map(r => (
       <Marker
         key={r.remarkId}
         name={r.remarkId}
@@ -147,6 +132,7 @@ class LandmarkMapComponent extends Component {
   }
 
   renderNewMarker() {
+    if(!this.props.remarks) { return; }
     if(!this.state.newMarker) { return; }
 
     return (
@@ -162,6 +148,9 @@ class LandmarkMapComponent extends Component {
   }
 
   render() {
+    const user = session.getUser();
+    const list = this.props.remarks;
+
     return (
       <Map
         centerAroundCurrentLocation
@@ -174,7 +163,7 @@ class LandmarkMapComponent extends Component {
         disableDoubleClickZoom={true}
       >
 
-        {this.renderMarkers()}
+        {this.renderMarkers(list)}
         {this.renderNewMarker()}
 
         <InterActiveInfoWindow
@@ -186,7 +175,7 @@ class LandmarkMapComponent extends Component {
             ? (<div>Please select a marker.</div>)
             : (<Remark
                 data={this.state.activeMarker.data}
-                editable={this.state.activeMarker.data.email==session.email}
+                editable={this.state.activeMarker.data.email==user.email}
                 new={this.state.newMarker != null}
                 onAction={this.onRemarkAction}
               />)}

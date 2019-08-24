@@ -2,6 +2,11 @@
 
 exports[`App component should match latest snapshot 1`] = `
 <styled.section>
-  <Wrapper />
+  <LoginComponent
+    onAction={[Function]}
+  />
+  <Wrapper
+    remarks={null}
+  />
 </styled.section>
 `;

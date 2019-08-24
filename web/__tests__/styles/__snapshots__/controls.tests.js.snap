@@ -1,19 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Remark styled components RemarkButton should match latest snapshot 1`] = `
+exports[`Controls styled components Button should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
     Object {
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-bZQynM",
+        "componentId": "sc-iwsKbI",
         "isStatic": true,
         "rules": Array [
           "
   min-width: 80px;
   padding: 1vh 1vw;
-  margin: 1vh 1vw 1vh 0;
   font-size: 1.5vmax;
   align-self: center;
 ",
@@ -22,7 +21,7 @@ exports[`Remark styled components RemarkButton should match latest snapshot 1`] 
       "displayName": "styled.button",
       "foldedComponentIds": Array [],
       "render": [Function],
-      "styledComponentId": "sc-bZQynM",
+      "styledComponentId": "sc-iwsKbI",
       "target": "button",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -33,26 +32,27 @@ exports[`Remark styled components RemarkButton should match latest snapshot 1`] 
 />
 `;
 
-exports[`Remark styled components RemarkButtonWrapper should match latest snapshot 1`] = `
+exports[`Controls styled components ButtonWrapper should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
     Object {
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-EHOje",
+        "componentId": "sc-dnqmqq",
         "isStatic": true,
         "rules": Array [
           "
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  margin: 1vh 1vw;
 ",
         ],
       },
       "displayName": "styled.div",
       "foldedComponentIds": Array [],
       "render": [Function],
-      "styledComponentId": "sc-EHOje",
+      "styledComponentId": "sc-dnqmqq",
       "target": "div",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -63,7 +63,7 @@ exports[`Remark styled components RemarkButtonWrapper should match latest snapsh
 />
 `;
 
-exports[`Remark styled components RemarkHeader should match latest snapshot 1`] = `
+exports[`Controls styled components Header should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
     Object {
@@ -93,14 +93,14 @@ exports[`Remark styled components RemarkHeader should match latest snapshot 1`] 
 />
 `;
 
-exports[`Remark styled components RemarkInput should match latest snapshot 1`] = `
+exports[`Controls styled components Input should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
     Object {
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-ifAKCX",
+        "componentId": "sc-bZQynM",
         "isStatic": true,
         "rules": Array [
           "
@@ -114,7 +114,7 @@ exports[`Remark styled components RemarkInput should match latest snapshot 1`] =
       "displayName": "styled.input",
       "foldedComponentIds": Array [],
       "render": [Function],
-      "styledComponentId": "sc-ifAKCX",
+      "styledComponentId": "sc-bZQynM",
       "target": "input",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -125,26 +125,28 @@ exports[`Remark styled components RemarkInput should match latest snapshot 1`] =
 />
 `;
 
-exports[`Remark styled components RemarkLabel should match latest snapshot 1`] = `
+exports[`Controls styled components Label should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
     Object {
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-bxivhb",
+        "componentId": "sc-ifAKCX",
         "isStatic": true,
         "rules": Array [
           "
-  font-size: larger;
   padding: 1vh 1vw;
+  align-self: center;
+  min-width: 80px;
+  width: 10vw;
 ",
         ],
       },
       "displayName": "styled.div",
       "foldedComponentIds": Array [],
       "render": [Function],
-      "styledComponentId": "sc-bxivhb",
+      "styledComponentId": "sc-ifAKCX",
       "target": "div",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -155,7 +157,43 @@ exports[`Remark styled components RemarkLabel should match latest snapshot 1`] =
 />
 `;
 
-exports[`Remark styled components RemarkStatus should render correctly for error 1`] = `
+exports[`Controls styled components PasswordStrengthIcon should match latest snapshot 1`] = `
+<StyledComponent
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-htoDjs",
+        "isStatic": false,
+        "rules": Array [
+          "
+  background-image: url(",
+          [Function],
+          ");
+  width: 4vw;
+  height: 4vh;
+  align-self: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+",
+        ],
+      },
+      "displayName": "styled.span",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "sc-htoDjs",
+      "target": "span",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+/>
+`;
+
+exports[`Controls styled components Status should render correctly for error 1`] = `
 <StyledComponent
   error={true}
   forwardedComponent={
@@ -194,7 +232,7 @@ exports[`Remark styled components RemarkStatus should render correctly for error
 />
 `;
 
-exports[`Remark styled components RemarkStatus should render correctly for non error 1`] = `
+exports[`Controls styled components Status should render correctly for non error 1`] = `
 <StyledComponent
   forwardedComponent={
     Object {
@@ -232,7 +270,7 @@ exports[`Remark styled components RemarkStatus should render correctly for non e
 />
 `;
 
-exports[`Remark styled components RemarkWrapper should match latest snapshot 1`] = `
+exports[`Controls styled components Wrapper should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
     Object {

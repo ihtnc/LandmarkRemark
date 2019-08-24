@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  RemarkWrapper,
-  RemarkHeader,
-  RemarkStatus,
-  RemarkLabel,
-  RemarkInput,
-  RemarkButtonWrapper,
-  RemarkButton
-} from '@styles/remark';
+  Wrapper,
+  Header,
+  Status,
+  ReadOnly,
+  Input,
+  ButtonWrapper,
+  Button
+} from '@styles/controls';
 
 import ApiClient from '@api/apiClient';
 
@@ -96,6 +96,7 @@ class RemarkComponent extends Component {
   showError(message) {
     this.setState({
       error: true,
+      busy: false,
       status: message
     });
   }
@@ -110,21 +111,21 @@ class RemarkComponent extends Component {
 
   render() {
     return (
-      <RemarkWrapper>
-        <RemarkHeader>{this.props.data.email}:</RemarkHeader>
+      <Wrapper>
+        <Header>{this.props.data.email}:</Header>
         {this.isReadonly()
-          ? (<RemarkLabel>{this.props.data.remark}</RemarkLabel>)
-          : (<RemarkInput value={this.state.remark} onChange={this.onRemarkChange} />)}
+          ? (<ReadOnly>{this.props.data.remark}</ReadOnly>)
+          : (<Input value={this.state.remark} onChange={this.onRemarkChange} />)}
 
-        <RemarkStatus show={this.showStatus()} error={this.state.error}>{this.state.status}</RemarkStatus>
+        <Status show={this.showStatus()} error={this.state.error}>{this.state.status}</Status>
 
         {!this.isReadonly() && (
-          <RemarkButtonWrapper>
-            <RemarkButton onClick={this.onSaveClick} disabled={this.state.busy}>Save</RemarkButton>
-            {!this.props.new && (<RemarkButton onClick={this.onDeleteClick} disabled={this.state.busy}>Delete</RemarkButton>)}
-          </RemarkButtonWrapper>
+          <ButtonWrapper>
+            <Button onClick={this.onSaveClick} disabled={this.state.busy}>Save</Button>
+            {!this.props.new && (<Button onClick={this.onDeleteClick} disabled={this.state.busy}>Delete</Button>)}
+          </ButtonWrapper>
         )}
-      </RemarkWrapper>
+      </Wrapper>
     );
   }
 }
