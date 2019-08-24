@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
   Wrapper,
   Header,
-  Status,
+  Footer,
   ReadOnly,
   Input,
   ButtonWrapper,
@@ -40,6 +40,10 @@ class RemarkComponent extends Component {
       error: false,
       status: ''
     };
+
+    this.onSaveClick = this.onSaveClick.bind(this);
+    this.onDeleteClick = this.onDeleteClick.bind(this);
+    this.onRemarkChange = this.onRemarkChange.bind(this);
   }
 
   onSaveClick = () => {
@@ -117,7 +121,7 @@ class RemarkComponent extends Component {
           ? (<ReadOnly>{this.props.data.remark}</ReadOnly>)
           : (<Input value={this.state.remark} onChange={this.onRemarkChange} />)}
 
-        <Status show={this.showStatus()} error={this.state.error}>{this.state.status}</Status>
+        <Footer show={this.showStatus()} error={this.state.error}>{this.state.status}</Footer>
 
         {!this.isReadonly() && (
           <ButtonWrapper>

@@ -14,7 +14,11 @@ class AppComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.state.remarks = null;
+    this.state = {
+      remarks: null,
+      error: false,
+      message: ''
+    };
   }
 
   componentDidMount() {
@@ -43,14 +47,25 @@ class AppComponent extends Component {
   }
 
   searchRemarks(text) {
+    this.showStatus('', false);
+
     ApiClient
       .getRemarks(text)
       .then(res => {
         this.setState({ remarks: res.data.data });
+        this.showStatus(`${res.data.data.length} remark(s) found.`, false);
       })
       .catch(error => {
         this.setState({ remarks: null });
+        this.showStatus(error.message, true);
       });
+  }
+
+  showStatus(message, error) {
+    this.setState({
+      error: error,
+      message: message
+    });
   }
 
   render() {
@@ -59,7 +74,7 @@ class AppComponent extends Component {
     return (
       <AppWrapper>
         { !isLoggedIn && (<Login onAction={this.onLogin}></Login>)}
-        { isLoggedIn && (<Dashboard email={email} onAction={this.onSearch}></Dashboard>)}
+        { isLoggedIn && (<Dashboard status={this.state.message} error={this.state.error} email={email} onAction={this.onSearch}></Dashboard>)}
 
         <LandmarkMap remarks={this.state.remarks}></LandmarkMap>
       </AppWrapper>

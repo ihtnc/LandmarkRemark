@@ -4,6 +4,7 @@ import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
 import config from '@src/config';
 import session from '@src/session';
+import location from '@src/location';
 
 import Remark from './remarkComponent';
 import InterActiveInfoWindow from './interactiveInfoWindow';
@@ -21,13 +22,50 @@ class LandmarkMapComponent extends PureComponent {
   }
 
   static defaultProps = {
-    center: { lat: -33.856762, lng: 151.215295 }, //Sydney Opera House
     zoom: 17,
     remarks: null
   }
 
   constructor(props) {
     super(props);
+
+    this.onMarkerClick = this.onMarkerClick.bind(this);
+    this.onMapClick = this.onMapClick.bind(this);
+    this.onMapDblClick = this.onMapDblClick.bind(this);
+    this.onMapRightClick = this.onMapRightClick.bind(this);
+    this.onInfoWindowClose = this.onInfoWindowClose.bind(this);
+    this.onRemarkAction = this.onRemarkAction.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    // center on current location on initial load
+    if(!prevProps.remarks) {
+      location.getCurrentLocation(pos => {
+        this.setState({ currentCenter: pos });
+      });
+
+      return;
+    }
+
+    if(this.props.remarks !== prevProps.remarks) {
+      // center on first item in the list on subsequent searches
+      const hasItems = this.props.remarks && this.props.remarks.length > 0;
+      if(hasItems) {
+        const first = this.props.remarks[0];
+        const center = {
+          lat: first.latitude,
+          lng: first.longitude
+        };
+
+        this.setState({ currentCenter: center });
+      }
+
+      // remarks has changed, meaning search was performed so clear the markers
+      this.setState({
+        activeMarker: null,
+        newMarker: null
+      });
+    }
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -72,6 +110,23 @@ class LandmarkMapComponent extends PureComponent {
         },
         position: ev.latLng
       }
+    });
+  };
+
+  onMapRightClick = (ref, map, ev) => {
+    // center on active marker
+    if (this.state.activeMarker != null && this.state.activeMarker.data != null) {
+      const center = {
+        lat: this.state.activeMarker.data.latitude,
+        lng: this.state.activeMarker.data.longitude
+      };
+      this.setState({ currentCenter: center });
+      return;
+    }
+
+    // center on current location otherwise
+    location.getCurrentLocation(pos => {
+      this.setState({ currentCenter: pos });
     });
   };
 
@@ -153,14 +208,14 @@ class LandmarkMapComponent extends PureComponent {
 
     return (
       <Map
-        centerAroundCurrentLocation
         google={this.props.google}
         zoom={this.props.zoom}
-        initialCenter={this.props.center}
         style={{ height: '100%', position: 'relative', width: '100%' }}
         onClick={this.onMapClick}
         onDblclick={this.onMapDblClick}
+        onRightclick={this.onMapRightClick}
         disableDoubleClickZoom={true}
+        center={this.state.currentCenter}
       >
 
         {this.renderMarkers(list)}

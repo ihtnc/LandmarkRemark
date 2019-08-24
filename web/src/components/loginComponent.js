@@ -38,6 +38,14 @@ class LoginComponent extends Component {
       confirm: '',
       register: false
     };
+
+    this.onRegister = this.onRegister.bind(this);
+    this.onLogin = this.onLogin.bind(this);
+    this.onNewUser = this.onNewUser.bind(this);
+    this.onCancel = this.onCancel.bind(this);
+    this.onEmailChange = this.onEmailChange.bind(this);
+    this.onPasswordChange = this.onPasswordChange.bind(this);
+    this.onConfirmChange = this.onConfirmChange.bind(this);
   }
 
   onRegister = () => {
@@ -101,7 +109,8 @@ class LoginComponent extends Component {
     this.setState({
       email: '',
       password: '',
-      confirm: ''
+      confirm: '',
+      status: ''
     });
   }
 
@@ -154,10 +163,10 @@ class LoginComponent extends Component {
         <Status show={this.showStatus()} error={this.state.error}>{this.state.status}</Status>
 
         <ButtonWrapper>
-          {this.state.register && (<Button onClick={this.onCancel} disabled={this.state.busy}>Cancel</Button>)}
           {this.state.register && (<Button onClick={this.onRegister} disabled={this.state.busy}>Register</Button>)}
-          {!this.state.register && (<Button onClick={this.onNewUser} disabled={this.state.busy}>Register</Button>)}
+          {this.state.register && (<Button onClick={this.onCancel} disabled={this.state.busy}>Cancel</Button>)}
           {!this.state.register && (<Button onClick={this.onLogin} disabled={this.state.busy}>Login</Button>)}
+          {!this.state.register && (<Button onClick={this.onNewUser} disabled={this.state.busy}>Register</Button>)}
         </ButtonWrapper>
       </Wrapper>
     );

@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginComponent should match latest snapshot 1`] = `
+<styled.div>
+  <styled.div>
+    <styled.div>
+      Email:
+    </styled.div>
+    <styled.input
+      onChange={[Function]}
+      value=""
+    />
+  </styled.div>
+  <styled.div>
+    <styled.div>
+      Password:
+    </styled.div>
+    <styled.input
+      onChange={[Function]}
+      type="password"
+      value=""
+    />
+  </styled.div>
+  <styled.span
+    error={false}
+    show={false}
+  />
+  <styled.div>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      Login
+    </styled.button>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      Register
+    </styled.button>
+  </styled.div>
+</styled.div>
+`;

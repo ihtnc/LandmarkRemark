@@ -8,8 +8,10 @@ const login = function (details) {
   return API.init().post(`user/login`, details);
 };
 
-const getRemarks = function (details) {
-  return API.init().get(`remarks`);
+const getRemarks = function (filter) {
+  return API.init().get(`remarks`, {
+    params: { filter }
+  });
 };
 
 const addRemark = function (details) {

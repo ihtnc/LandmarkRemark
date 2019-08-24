@@ -8,7 +8,10 @@ import {
   Input,
   PasswordStrengthIcon,
   ButtonWrapper,
-  Button
+  Button,
+  TextWrapper,
+  GoogleMarker,
+  Caret
 } from "@styles/controls";
 
 describe("Controls styled components", () => {
@@ -56,6 +59,23 @@ describe("Controls styled components", () => {
 
   test("Button should match latest snapshot", () => {
     const wrapper = shallow(<Button />)
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  test("TextWrapper should match latest snapshot", () => {
+    const wrapper = shallow(<TextWrapper />)
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  test("GoogleMarker should match latest snapshot", () => {
+    const size = '18px';
+    const wrapper = shallow(<GoogleMarker size={size} />)
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  test("Caret should match latest snapshot", () => {
+    const expand = true;
+    const wrapper = shallow(<Caret expand={expand} />)
     expect(wrapper).toMatchSnapshot();
   });
 });

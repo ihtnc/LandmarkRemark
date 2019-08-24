@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  font-size: 1.75vmax;
+  font-size: 16px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -13,7 +13,7 @@ const Header = styled.div`
   padding: 1vh 1vw;
 `;
 
-const Status = styled.span`
+const Footer = styled.span`
   padding: 1vh 1vw;
   margin: 1vh 1vw;
   font-size: smaller;
@@ -22,9 +22,18 @@ const Status = styled.span`
   display: ${props => getStatusDisplay(props)};
 `;
 
+
+const Status = styled.span`
+  padding: 1vh 1vw;
+  margin: 1vh 1vw;
+  color: ${props => getStatusColor(props)};
+  align-self: flex-start;
+  display: ${props => getStatusDisplay(props)};
+`;
+
 const getStatusColor = (props) => {
   if(props.error) { return 'red'; }
-  return 'gray';
+  return 'inherit';
 };
 
 const getStatusDisplay = (props) => {
@@ -35,6 +44,7 @@ const getStatusDisplay = (props) => {
 const FieldWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
 `;
 
 const Label = styled.div`
@@ -58,8 +68,8 @@ const Input = styled.input`
 
 const EmailValidationIcon = styled.span`
   background-image: url(${props => getEmailIcon(props.value)});
-  width: 4vw;
-  height: 4vh;
+  width: 30px;
+  height: 30px;
   align-self: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -77,8 +87,8 @@ const getEmailIcon = (value) => {
 
 const PasswordStrengthIcon = styled.span`
   background-image: url(${props => getStrengthIcon(props.value)});
-  width: 4vw;
-  height: 4vh;
+  width: 30px;
+  height: 30px;
   align-self: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -103,19 +113,64 @@ const getStrengthIcon = (value) => {
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-direction: row-reverse;
   margin: 1vh 1vw;
 `;
 
 const Button = styled.button`
   min-width: 80px;
   padding: 1vh 1vw;
-  font-size: 1.5vmax;
+  font-size: 16px;
   align-self: center;
 `;
+
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1vh;
+
+  *:hover {
+    cursor: pointer;
+  }
+`;
+
+const GoogleMarker = styled.span`
+  background-image: url(${props => getMarkerImage(props.color)});
+  align-self: center;
+  width: ${props => props.size};
+  height: ${props => props.size};
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: inline-block;
+`;
+
+const getMarkerImage = (color) => {
+  if(color == 'blue') { return 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'; }
+  if(color == 'green') { return 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'; }
+  if(color == 'yellow') { return 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'; }
+  return 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+};
+
+const Caret = styled.span`
+  background-image: url(${props => getCaretImage(props.expand)});
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: inline-block;
+  margin-right: 8px;
+`;
+
+const getCaretImage = (expand) => {
+  if(expand) { return 'https://img.icons8.com/flat_round/64/000000/expand-arrow--v2.png'; }
+  return 'https://img.icons8.com/flat_round/64/000000/collapse-arrow--v2.png'
+}
 
 export {
   Wrapper,
   Header,
+  Footer,
   Status,
   FieldWrapper,
   Label,
@@ -124,5 +179,8 @@ export {
   EmailValidationIcon,
   PasswordStrengthIcon,
   ButtonWrapper,
-  Button
+  Button,
+  TextWrapper,
+  GoogleMarker,
+  Caret
 };

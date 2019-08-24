@@ -1,0 +1,162 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LandmarkMapComponent should render correctly on ready state 1`] = `
+<styled.div>
+  <styled.div>
+    <styled.div>
+      Email:
+    </styled.div>
+    <styled.div>
+      email
+    </styled.div>
+  </styled.div>
+  <styled.div>
+    <styled.div>
+      Filter:
+    </styled.div>
+    <styled.input
+      onChange={[Function]}
+      value=""
+    />
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      Apply
+    </styled.button>
+  </styled.div>
+  <styled.div>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      Log Out
+    </styled.button>
+    <styled.span
+      error={false}
+    />
+  </styled.div>
+  <div>
+    <styled.div>
+      <styled.span
+        expand={true}
+        onClick={[Function]}
+      />
+      <div
+        onClick={[Function]}
+      >
+        Click to view instructions
+      </div>
+    </styled.div>
+  </div>
+</styled.div>
+`;
+
+exports[`LandmarkMapComponent should render correctly when there is a status update 1`] = `
+<styled.div>
+  <styled.div>
+    <styled.div>
+      Email:
+    </styled.div>
+    <styled.div>
+      email
+    </styled.div>
+  </styled.div>
+  <styled.div>
+    <styled.div>
+      Filter:
+    </styled.div>
+    <styled.input
+      onChange={[Function]}
+      value=""
+    />
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      Apply
+    </styled.button>
+  </styled.div>
+  <styled.div>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      Log Out
+    </styled.button>
+    <styled.span
+      error={false}
+    >
+      message
+    </styled.span>
+  </styled.div>
+  <div>
+    <styled.div>
+      <styled.span
+        expand={true}
+        onClick={[Function]}
+      />
+      <div
+        onClick={[Function]}
+      >
+        Click to view instructions
+      </div>
+    </styled.div>
+  </div>
+</styled.div>
+`;
+
+exports[`LandmarkMapComponent should render correctly when there is an error 1`] = `
+<styled.div>
+  <styled.div>
+    <styled.div>
+      Email:
+    </styled.div>
+    <styled.div>
+      email
+    </styled.div>
+  </styled.div>
+  <styled.div>
+    <styled.div>
+      Filter:
+    </styled.div>
+    <styled.input
+      onChange={[Function]}
+      value=""
+    />
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      Apply
+    </styled.button>
+  </styled.div>
+  <styled.div>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      Log Out
+    </styled.button>
+    <styled.span
+      error={true}
+      show={true}
+    >
+      message
+    </styled.span>
+  </styled.div>
+  <div>
+    <styled.div>
+      <styled.span
+        expand={true}
+        onClick={[Function]}
+      />
+      <div
+        onClick={[Function]}
+      >
+        Click to view instructions
+      </div>
+    </styled.div>
+  </div>
+</styled.div>
+`;
