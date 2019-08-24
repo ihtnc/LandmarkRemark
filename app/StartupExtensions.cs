@@ -19,7 +19,10 @@ namespace LandmarkRemark
 
                     .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
 
+                    .AddTransient<ISecurityService, SecurityService>()
                     .AddTransient<IRemarksService, RemarksService>()
+
+                    .AddTransient<IFirebaseAuthenticationProvider, FirebaseAuthenticationProvider>()
 
                     .AddTransient<IRemarksRepository, FirebaseRemarksRepository>()
 

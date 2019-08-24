@@ -27,6 +27,7 @@ namespace LandmarkRemark.Api
                 .AddOptions()
                 .Configure<FirebaseConfig>(option =>
                 {
+                    option.Identity = Configuration["ENV_FIREBASE_IDENTITY"];
                     option.Database = Configuration["ENV_FIREBASE_DATABASE"];
                     option.ApiKey = Configuration["ENV_FIREBASE_APIKEY"];
                 })

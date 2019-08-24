@@ -2,7 +2,8 @@ namespace LandmarkRemark.Api.Config
 {
     public class FirebaseConfig
     {
-        public string ApiKey { get; set; }
+        public string Identity { get; set; }
         public string Database { get; set; }
+        public string ApiKey { get; set; }
     }
 }
