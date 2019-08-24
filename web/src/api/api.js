@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import config from '@src/config';
+import config from '@config';
 import session from '@src/session';
 
 const init = () => {

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
-import config from '@src/config';
+import config from '@config';
 import session from '@src/session';
 import location from '@src/location';
 

@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/app/bin/Debug/netcoreapp2.2/LandmarkRemark.Api.dll",
+            "program": "${workspaceFolder}/app/src/bin/Debug/netcoreapp2.2/LandmarkRemark.Api.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/app",
+            "cwd": "${workspaceFolder}/output",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {

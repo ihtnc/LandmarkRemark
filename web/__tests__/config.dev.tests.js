@@ -1,4 +1,4 @@
-import config from "@src/config";
+import config from "@config";
 
 describe("Config module", () => {
   test("should define GOOGLE_MAP_API_KEY", () => {

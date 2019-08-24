@@ -2,16 +2,30 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "build-web",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run",
+                "build"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/web"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "build",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/app/LandmarkRemark.Api.csproj",
+                "${workspaceFolder}/app/src/LandmarkRemark.Api.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "dependsOn": ["build-web"],
         },
         {
             "label": "publish",
@@ -19,7 +33,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/app/LandmarkRemark.Api.csproj",
+                "${workspaceFolder}/app/src/LandmarkRemark.Api.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -32,7 +46,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/app/LandmarkRemark.Api.csproj",
+                "${workspaceFolder}/app/src/LandmarkRemark.Api.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
