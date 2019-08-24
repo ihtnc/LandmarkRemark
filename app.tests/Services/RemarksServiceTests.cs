@@ -1,3 +1,4 @@
+using System.Linq;
 using LandmarkRemark.Api.Models;
 using LandmarkRemark.Api.Repositories;
 using LandmarkRemark.Api.Repositories.Models;
@@ -36,6 +37,37 @@ namespace LandmarkRemark.Api.Tests.Services
             var actual = await _service.GetRemarks();
 
             actual.Should().BeEquivalentTo(expected);
+        }
+
+        [Theory]
+        [InlineData(null, new [] {"aaabbb", "aaaccc", "bbbddd", "email"})]
+        [InlineData("", new [] {"aaabbb", "aaaccc", "bbbddd", "email"})]
+        [InlineData("   ", new [] {"aaabbb", "aaaccc", "bbbddd", "email"})]
+        [InlineData("aaa", new [] {"aaabbb", "aaaccc"})]
+        [InlineData("bbb", new [] {"aaabbb", "bbbddd"})]
+        [InlineData("ccc", new [] {"aaaccc", "bbbddd"})]
+        [InlineData("ddd", new [] {"aaaccc", "bbbddd"})]
+        [InlineData("eee", new [] {"aaabbb", "aaaccc"})]
+        [InlineData("fff", new [] {"aaabbb", "bbbddd"})]
+        [InlineData("ggg", new string[] {})]
+        [InlineData("111", new string[] {"aaabbb", "aaaccc", "bbbddd"})]
+        [InlineData("AaA", new [] {"aaabbb", "aaaccc"})]
+        public async void GetRemarks_Should_Filter_Correctly(string filter, string[] expectedEmails)
+        {
+            var expected = new []
+            {
+                new RemarkDetails { Email = "aaabbb", Remark = "eeefff111" },
+                new RemarkDetails { Email = "aaaccc", Remark = "dddeee111" },
+                new RemarkDetails { Email = "bbbddd", Remark = "cccfff111" },
+                new RemarkDetails { Email = "email", Remark = "remark" }
+            };
+            _repository.GetRemarks().Returns(expected);
+
+            var actual = await _service.GetRemarks(filter);
+
+            var emails = actual.Select(r => r.Email);
+            emails.Should().HaveSameCount(expectedEmails);
+            emails.Should().BeEquivalentTo(expectedEmails);
         }
 
         [Fact]

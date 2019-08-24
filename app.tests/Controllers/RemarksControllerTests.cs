@@ -81,9 +81,10 @@ namespace LandmarkRemark.Api.Tests.Controllers
         {
             var service = Substitute.For<IRemarksService>();
 
-            await _controller.GetRemarks(service);
+            var filter = "filter";
+            await _controller.GetRemarks(filter, service);
 
-            await service.Received(1).GetRemarks();
+            await service.Received(1).GetRemarks(filter);
         }
 
         [Fact]
@@ -91,9 +92,9 @@ namespace LandmarkRemark.Api.Tests.Controllers
         {
             IEnumerable<RemarkDetails> response = new [] { new RemarkDetails() };
             var service = Substitute.For<IRemarksService>();
-            service.GetRemarks().Returns(response);
+            service.GetRemarks(Arg.Any<string>()).Returns(response);
 
-            var actual = await _controller.GetRemarks(service);
+            var actual = await _controller.GetRemarks("any", service);
 
             actual.Should().BeOfType<ActionResult<ApiResponse>>();
 

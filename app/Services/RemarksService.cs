@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LandmarkRemark.Api.Models;
@@ -8,7 +10,7 @@ namespace LandmarkRemark.Api.Services
 {
     public interface IRemarksService
     {
-        Task<IEnumerable<RemarkDetails>> GetRemarks();
+        Task<IEnumerable<RemarkDetails>> GetRemarks(string filter = null);
         Task<RemarkDetails> AddRemark(string email, AddRemarkRequest request);
         Task UpdateRemark(string remarkId, UpdateRemarkRequest request);
         Task DeleteRemark(string remarkId);
@@ -23,9 +25,14 @@ namespace LandmarkRemark.Api.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<RemarkDetails>> GetRemarks()
+        public async Task<IEnumerable<RemarkDetails>> GetRemarks(string filter = null)
         {
-            return await _repository.GetRemarks();
+            var list = await _repository.GetRemarks();
+            return string.IsNullOrWhiteSpace(filter)
+                ? list
+                : list.Where(item =>
+                    item.Email.Contains(filter, StringComparison.OrdinalIgnoreCase)
+                        || item.Remark.Contains(filter, StringComparison.OrdinalIgnoreCase));
         }
 
         public async Task<RemarkDetails> AddRemark(string email, AddRemarkRequest request)

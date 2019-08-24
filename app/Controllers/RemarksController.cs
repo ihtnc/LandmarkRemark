@@ -21,9 +21,9 @@ namespace LandmarkRemark.Api.Controllers
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse>> GetRemarks([FromServices] IRemarksService remarksService)
+        public async Task<ActionResult<ApiResponse>> GetRemarks([FromQuery] string filter, [FromServices] IRemarksService remarksService)
         {
-            var response = await remarksService.GetRemarks();
+            var response = await remarksService.GetRemarks(filter);
             return ApiResponseHelper.Ok($"{response.Count()} remark(s) found.", response);
         }
 
