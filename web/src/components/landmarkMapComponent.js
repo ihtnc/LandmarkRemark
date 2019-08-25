@@ -5,6 +5,7 @@ import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import config from '@config';
 import session from '@src/session';
 import location from '@src/location';
+import icons from '@src/icons';
 
 import Remark from './remarkComponent';
 import InterActiveInfoWindow from './interactiveInfoWindow';
@@ -23,7 +24,8 @@ class LandmarkMapComponent extends PureComponent {
 
   static defaultProps = {
     zoom: 17,
-    remarks: null
+    remarks: null,
+    center: null
   }
 
   constructor(props) {
@@ -41,7 +43,10 @@ class LandmarkMapComponent extends PureComponent {
     // center on current location on initial load
     if(!prevProps.remarks) {
       location.getCurrentLocation(pos => {
-        this.setState({ currentCenter: pos });
+        this.setState({
+          currentCenter: pos,
+          currentLocation: pos
+        });
       });
 
       return;
@@ -65,7 +70,11 @@ class LandmarkMapComponent extends PureComponent {
         activeMarker: null,
         newMarker: null
       });
+
+      return;
     }
+
+    if(this.props.center) { this.setState({ currentCenter: this.props.center }); }
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -160,16 +169,16 @@ class LandmarkMapComponent extends PureComponent {
 
   getMarkerIcon(remarkId, email) {
     const newlyAdded = !this.state.activeMarker && !remarkId;
-    if(newlyAdded) { return 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'; }
+    if(newlyAdded) { return icons.YELLOW_DOT; }
 
     const isActive = this.state.activeMarker && this.state.activeMarker.data && this.state.activeMarker.data.remarkId == remarkId;
-    if(isActive) { return 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'; }
+    if(isActive) { return icons.GREEN_DOT; }
 
     const user = session.getUser();
     const isAuthor = user.email == email;
-    if(isAuthor) { return 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'; }
+    if(isAuthor) { return icons.RED_DOT; }
 
-    return 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+    return icons.BLUE_DOT;
   }
 
   renderMarkers(list) {
@@ -202,6 +211,19 @@ class LandmarkMapComponent extends PureComponent {
     );
   }
 
+  renderCurrentLocation() {
+    if(!this.props.remarks) { return; }
+
+    return (
+      <Marker
+        name={'You'}
+        title={'You'}
+        position={this.state.currentLocation}
+        icon={icons.SELF}
+      />
+    );
+  }
+
   render() {
     const user = session.getUser();
     const list = this.props.remarks;
@@ -220,6 +242,7 @@ class LandmarkMapComponent extends PureComponent {
 
         {this.renderMarkers(list)}
         {this.renderNewMarker()}
+        {this.renderCurrentLocation()}
 
         <InterActiveInfoWindow
           marker={this.state.activeMarker}

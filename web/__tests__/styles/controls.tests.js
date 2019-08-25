@@ -12,7 +12,8 @@ import {
   TextWrapper,
   InlineTextWrapper,
   GoogleMarker,
-  Caret
+  Caret,
+  Arrow
 } from "@styles/controls";
 
 describe("Controls styled components", () => {
@@ -82,6 +83,12 @@ describe("Controls styled components", () => {
   test("Caret should match latest snapshot", () => {
     const expand = true;
     const wrapper = shallow(<Caret expand={expand} />)
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  test("Arrow should match latest snapshot", () => {
+    const direction = "left";
+    const wrapper = shallow(<Arrow direction={direction} />)
     expect(wrapper).toMatchSnapshot();
   });
 });

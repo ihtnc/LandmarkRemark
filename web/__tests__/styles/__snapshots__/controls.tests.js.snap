@@ -1,5 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Controls styled components Arrow should match latest snapshot 1`] = `
+<StyledComponent
+  direction="left"
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-jzJRlG",
+        "isStatic": false,
+        "rules": Array [
+          "
+  background-image: url(",
+          [Function],
+          ");
+  align-self: center;
+  width: ",
+          [Function],
+          ";
+  height: ",
+          [Function],
+          ";
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: inline-block;
+  margin-top: 3px;
+  margin-bottom: -3px;
+",
+        ],
+      },
+      "displayName": "styled.span",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "sc-jzJRlG",
+      "target": "span",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+/>
+`;
+
 exports[`Controls styled components Button should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
@@ -47,6 +91,11 @@ exports[`Controls styled components ButtonWrapper should match latest snapshot 1
   justify-content: space-between;
   flex-direction: row-reverse;
   margin: 1vh 1vw;
+
+  > span:last-child {
+    padding: 1vh 1vw 1vh 0px;
+    margin: 1vh 1vw 1vh 0px;
+  }
 ",
         ],
       },
@@ -331,7 +380,7 @@ exports[`Controls styled components Status should render correctly for error 1`]
         "isStatic": false,
         "rules": Array [
           "
-  padding: 1vh 1vw 1vh 0px;
+  padding: 1vh 1vw;
   margin: 1vh 1vw 1vh 0px;
   color: ",
           [Function],
@@ -368,7 +417,7 @@ exports[`Controls styled components Status should render correctly for non error
         "isStatic": false,
         "rules": Array [
           "
-  padding: 1vh 1vw 1vh 0px;
+  padding: 1vh 1vw;
   margin: 1vh 1vw 1vh 0px;
   color: ",
           [Function],

@@ -15,7 +15,8 @@ import {
     TextWrapper,
     InlineTextWrapper,
     GoogleMarker,
-    Caret
+    Caret,
+    Arrow
   } from '@styles/controls';
 
 class DashboardComponent extends Component {
@@ -29,7 +30,7 @@ class DashboardComponent extends Component {
   }
 
   static defaultProps = {
-    onAction: (data) => {}
+    onAction: (data, action) => {}
   }
 
   constructor(props) {
@@ -76,6 +77,14 @@ class DashboardComponent extends Component {
   onSearch = () => {
     this.showBusy();
     this.props.onAction(this.state.search, 'search');
+  }
+
+  onPreviousRemark = () => {
+    this.props.onAction(null, 'prev');
+  }
+
+  onNextRemark = () => {
+    this.props.onAction(null, 'next');
   }
 
   onLogout = () => {
@@ -143,6 +152,8 @@ class DashboardComponent extends Component {
           <Label>Filter:</Label>
           <Input value={this.state.search} onChange={this.onSearchChange} />
           <Button onClick={this.onSearch} disabled={this.state.busy}>Apply</Button>
+          <Button onClick={this.onPreviousRemark} disabled={this.state.busy}>&lt;&lt;</Button>
+          <Button onClick={this.onNextRemark} disabled={this.state.busy}>&gt;&gt;</Button>
         </FieldWrapper>
 
         {!this.state.collapseDashboard && (
@@ -161,10 +172,11 @@ class DashboardComponent extends Component {
 
             {!this.state.expandInfo && (
               <ul>
-                <li>Apply filter to search for specific user or remark</li>
-                <li>Click on <GoogleMarker color={'red'} size={'20px'} /> to update or delete your remark</li>
-                <li>Click on <GoogleMarker color={'blue'} size={'20px'} /> to view other user's remark</li>
-                <li>Double click on map to add a new remark <GoogleMarker color={'yellow'} size={'20px'} /> on that location</li>
+                <li>Apply filter to search for specific user or remark.</li>
+                <li>Click on <Arrow direction={'left'} size={'20px'} /> or <Arrow direction={'right'} size={'20px'} /> to navigate between remarks.</li>
+                <li>Click on <GoogleMarker color={'red'} size={'20px'} /> to update or delete your remark.</li>
+                <li>Click on <GoogleMarker color={'blue'} size={'20px'} /> to view other user's remark.</li>
+                <li>Double click on map to add a new remark <GoogleMarker color={'yellow'} size={'20px'} /> on that location.</li>
                 <li>Right click on map to center on selected remark's <GoogleMarker color={'green'} size={'20px'} /> location. If there is none selected, center on current location.</li>
               </ul>
             )}

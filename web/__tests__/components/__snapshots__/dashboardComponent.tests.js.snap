@@ -35,6 +35,18 @@ exports[`LandmarkMapComponent should render correctly on ready state 1`] = `
     >
       Apply
     </styled.button>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      &lt;&lt;
+    </styled.button>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      &gt;&gt;
+    </styled.button>
   </styled.div>
   <styled.div>
     <styled.button
@@ -97,6 +109,18 @@ exports[`LandmarkMapComponent should render correctly when there is a status upd
       onClick={[Function]}
     >
       Apply
+    </styled.button>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      &lt;&lt;
+    </styled.button>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      &gt;&gt;
     </styled.button>
   </styled.div>
   <styled.div>
@@ -162,6 +186,18 @@ exports[`LandmarkMapComponent should render correctly when there is an error 1`]
       onClick={[Function]}
     >
       Apply
+    </styled.button>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      &lt;&lt;
+    </styled.button>
+    <styled.button
+      disabled={false}
+      onClick={[Function]}
+    >
+      &gt;&gt;
     </styled.button>
   </styled.div>
   <styled.div>
