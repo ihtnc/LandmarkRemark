@@ -24,8 +24,8 @@ const Footer = styled.span`
 
 
 const Status = styled.span`
-  padding: 1vh 1vw;
-  margin: 1vh 1vw;
+  padding: 1vh 1vw 1vh 0px;
+  margin: 1vh 1vw 1vh 0px;
   color: ${props => getStatusColor(props)};
   align-self: flex-start;
   display: ${props => getStatusDisplay(props)};
@@ -135,6 +135,26 @@ const TextWrapper = styled.div`
   }
 `;
 
+const InlineTextWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  > * {
+    margin: 0px;
+    padding: 0px 1vw 0px 0px;
+  }
+
+  > :first-child {
+    padding-left: 1vw;
+  }
+
+
+  *:hover {
+    cursor: pointer;
+  }
+`;
+
 const GoogleMarker = styled.span`
   background-image: url(${props => getMarkerImage(props.color)});
   align-self: center;
@@ -181,6 +201,7 @@ export {
   ButtonWrapper,
   Button,
   TextWrapper,
+  InlineTextWrapper,
   GoogleMarker,
   Caret
 };

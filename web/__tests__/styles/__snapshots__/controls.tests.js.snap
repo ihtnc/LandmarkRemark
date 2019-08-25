@@ -72,7 +72,7 @@ exports[`Controls styled components Caret should match latest snapshot 1`] = `
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-jTzLTM",
+        "componentId": "sc-fjdhpX",
         "isStatic": false,
         "rules": Array [
           "
@@ -91,7 +91,7 @@ exports[`Controls styled components Caret should match latest snapshot 1`] = `
       "displayName": "styled.span",
       "foldedComponentIds": Array [],
       "render": [Function],
-      "styledComponentId": "sc-jTzLTM",
+      "styledComponentId": "sc-fjdhpX",
       "target": "span",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -109,7 +109,7 @@ exports[`Controls styled components GoogleMarker should match latest snapshot 1`
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-VigVT",
+        "componentId": "sc-jTzLTM",
         "isStatic": false,
         "rules": Array [
           "
@@ -132,7 +132,7 @@ exports[`Controls styled components GoogleMarker should match latest snapshot 1`
       "displayName": "styled.span",
       "foldedComponentIds": Array [],
       "render": [Function],
-      "styledComponentId": "sc-VigVT",
+      "styledComponentId": "sc-jTzLTM",
       "target": "span",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -164,6 +164,51 @@ exports[`Controls styled components Header should match latest snapshot 1`] = `
       "foldedComponentIds": Array [],
       "render": [Function],
       "styledComponentId": "sc-bwzfXH",
+      "target": "div",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+/>
+`;
+
+exports[`Controls styled components InlineTextWrapper should match latest snapshot 1`] = `
+<StyledComponent
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-VigVT",
+        "isStatic": true,
+        "rules": Array [
+          "
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  > * {
+    margin: 0px;
+    padding: 0px 1vw 0px 0px;
+  }
+
+  > :first-child {
+    padding-left: 1vw;
+  }
+
+
+  *:hover {
+    cursor: pointer;
+  }
+",
+        ],
+      },
+      "displayName": "styled.div",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "sc-VigVT",
       "target": "div",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -286,8 +331,8 @@ exports[`Controls styled components Status should render correctly for error 1`]
         "isStatic": false,
         "rules": Array [
           "
-  padding: 1vh 1vw;
-  margin: 1vh 1vw;
+  padding: 1vh 1vw 1vh 0px;
+  margin: 1vh 1vw 1vh 0px;
   color: ",
           [Function],
           ";
@@ -323,8 +368,8 @@ exports[`Controls styled components Status should render correctly for non error
         "isStatic": false,
         "rules": Array [
           "
-  padding: 1vh 1vw;
-  margin: 1vh 1vw;
+  padding: 1vh 1vw 1vh 0px;
+  margin: 1vh 1vw 1vh 0px;
   color: ",
           [Function],
           ";

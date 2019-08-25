@@ -10,6 +10,7 @@ import {
   ButtonWrapper,
   Button,
   TextWrapper,
+  InlineTextWrapper,
   GoogleMarker,
   Caret
 } from "@styles/controls";
@@ -64,6 +65,11 @@ describe("Controls styled components", () => {
 
   test("TextWrapper should match latest snapshot", () => {
     const wrapper = shallow(<TextWrapper />)
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  test("InlineTextWrapper should match latest snapshot", () => {
+    const wrapper = shallow(<InlineTextWrapper />)
     expect(wrapper).toMatchSnapshot();
   });
 

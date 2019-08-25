@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import UserPreference from '@src/userPreference';
+
 import {
     Wrapper,
     Status,
@@ -11,6 +13,7 @@ import {
     ButtonWrapper,
     Button,
     TextWrapper,
+    InlineTextWrapper,
     GoogleMarker,
     Caret
   } from '@styles/controls';
@@ -37,13 +40,15 @@ class DashboardComponent extends Component {
       error: props.error || false,
       status: props.status || '',
       search: '',
-      expand: true
+      collapseDashboard: UserPreference.get('collapseDashboard') == 'true',
+      expandInfo: true
     };
 
     this.onSearch = this.onSearch.bind(this);
     this.onLogout = this.onLogout.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
-    this.onCaretClick = this.onCaretClick.bind(this);
+    this.onDashboardCaretClick = this.onDashboardCaretClick.bind(this);
+    this.onInfoCaretClick = this.onInfoCaretClick.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -82,8 +87,13 @@ class DashboardComponent extends Component {
     this.setState({search: event.target.value});
   }
 
-  onCaretClick = () => {
-    this.setState({expand: !this.state.expand});
+  onDashboardCaretClick = () => {
+    UserPreference.save('collapseDashboard', !this.state.collapseDashboard);
+    this.setState({collapseDashboard: !this.state.collapseDashboard});
+  }
+
+  onInfoCaretClick = () => {
+    this.setState({expandInfo: !this.state.expandInfo});
   }
 
   showBusy() {
@@ -111,37 +121,55 @@ class DashboardComponent extends Component {
   render() {
     return (
       <Wrapper>
-        <FieldWrapper>
-          <Label>Email:</Label>
-          <ReadOnly>{this.props.email}</ReadOnly>
-        </FieldWrapper>
+        <TextWrapper>
+          <Caret expand={this.state.collapseDashboard} onClick={this.onDashboardCaretClick} />
+          <div onClick={this.onDashboardCaretClick}>Dashboard</div>
+          {this.state.collapseDashboard && (
+            <InlineTextWrapper>
+              <div>:: {`(${this.props.email})`}</div>
+              <Status show={this.showStatus()} error={this.state.error}>{this.state.status}</Status>
+            </InlineTextWrapper>
+          )}
+        </TextWrapper>
+
+        {!this.state.collapseDashboard && (
+          <FieldWrapper>
+            <Label>Email:</Label>
+            <ReadOnly>{this.props.email}</ReadOnly>
+          </FieldWrapper>
+        )}
+
         <FieldWrapper>
           <Label>Filter:</Label>
           <Input value={this.state.search} onChange={this.onSearchChange} />
           <Button onClick={this.onSearch} disabled={this.state.busy}>Apply</Button>
         </FieldWrapper>
 
-        <ButtonWrapper>
-          <Button onClick={this.onLogout} disabled={this.state.busy}>Log Out</Button>
-          <Status show={this.showStatus()} error={this.state.error}>{this.state.status}</Status>
-        </ButtonWrapper>
+        {!this.state.collapseDashboard && (
+          <ButtonWrapper>
+            <Button onClick={this.onLogout} disabled={this.state.busy}>Log Out</Button>
+            <Status show={this.showStatus()} error={this.state.error}>{this.state.status}</Status>
+          </ButtonWrapper>
+        )}
 
-        <div>
-          <TextWrapper>
-            <Caret expand={this.state.expand} onClick={this.onCaretClick} />
-            <div onClick={this.onCaretClick}>{!this.state.expand ? 'Instructions:' : 'Click to view instructions'}</div>
-          </TextWrapper>
+        {!this.state.collapseDashboard && (
+          <div>
+            <TextWrapper>
+              <Caret expand={this.state.expandInfo} onClick={this.onInfoCaretClick} />
+              <div onClick={this.onInfoCaretClick}>Instructions</div>
+            </TextWrapper>
 
-          {!this.state.expand && (
-            <ul>
-              <li>Apply filter to search for specific user or remark</li>
-              <li>Click on <GoogleMarker color={'red'} size={'20px'} /> to update or delete your remark</li>
-              <li>Click on <GoogleMarker color={'blue'} size={'20px'} /> to view other user's remark</li>
-              <li>Double click on map to add a new remark <GoogleMarker color={'yellow'} size={'20px'} /> on that location</li>
-              <li>Right click on map to center on selected remark's <GoogleMarker color={'green'} size={'20px'} /> location. If there is none selected, center on current location.</li>
-            </ul>
-          )}
-        </div>
+            {!this.state.expandInfo && (
+              <ul>
+                <li>Apply filter to search for specific user or remark</li>
+                <li>Click on <GoogleMarker color={'red'} size={'20px'} /> to update or delete your remark</li>
+                <li>Click on <GoogleMarker color={'blue'} size={'20px'} /> to view other user's remark</li>
+                <li>Double click on map to add a new remark <GoogleMarker color={'yellow'} size={'20px'} /> on that location</li>
+                <li>Right click on map to center on selected remark's <GoogleMarker color={'green'} size={'20px'} /> location. If there is none selected, center on current location.</li>
+              </ul>
+            )}
+          </div>
+        )}
       </Wrapper>
     );
   }
