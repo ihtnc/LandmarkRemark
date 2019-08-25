@@ -50,6 +50,8 @@ class DashboardComponent extends Component {
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onDashboardCaretClick = this.onDashboardCaretClick.bind(this);
     this.onInfoCaretClick = this.onInfoCaretClick.bind(this);
+    this.onPreviousRemark = this.onPreviousRemark.bind(this);
+    this.onNextRemark = this.onNextRemark.bind(this);
   }
 
   componentDidUpdate(prevProps) {

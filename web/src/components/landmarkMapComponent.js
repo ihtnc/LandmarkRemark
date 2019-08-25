@@ -74,7 +74,17 @@ class LandmarkMapComponent extends PureComponent {
       return;
     }
 
-    if(this.props.center) { this.setState({ currentCenter: this.props.center }); }
+    // navigating to another marker, so clear the markers
+    if(prevProps.center != this.props.center) {
+      this.setState({
+        activeMarker: null,
+        newMarker: null
+      });
+
+      if(this.props.center) { this.setState({ currentCenter: this.props.center }); }
+
+      return;
+    }
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -135,7 +145,10 @@ class LandmarkMapComponent extends PureComponent {
 
     // center on current location otherwise
     location.getCurrentLocation(pos => {
-      this.setState({ currentCenter: pos });
+      this.setState({
+        currentCenter: pos,
+        currentLocation: pos
+      });
     });
   };
 
