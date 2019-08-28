@@ -2,6 +2,20 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "copy-app-settings",
+            "type": "shell",
+            "command": "copy",
+            "args": [
+                "appsettings.json",
+                "..\\..\\output",
+                "/Y"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/app/src"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "build-web",
             "type": "shell",
             "command": "npm",
@@ -25,7 +39,7 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile",
-            "dependsOn": ["build-web"],
+            "dependsOn": ["build-web", "copy-app-settings"],
         },
         {
             "label": "publish",

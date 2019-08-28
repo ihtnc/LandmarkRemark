@@ -6,17 +6,22 @@ const getCurrentLocation = (callback) => {
     return;
   }
 
-  navigator.geolocation.getCurrentPosition(pos => {
+  navigator.geolocation.getCurrentPosition((pos) => {
     const current = {
       lat: pos.coords.latitude,
       lng: pos.coords.longitude
     };
 
     callback(current);
+  }, (e) => {
+    callback(SYDNEY_OPERA_HOUSE);
+  }, {
+    enableHighAccuracy: true,
+    timeout:5000
   });
 };
 
 export default {
-    SYDNEY_OPERA_HOUSE,
-    getCurrentLocation
+  SYDNEY_OPERA_HOUSE,
+  getCurrentLocation
 }

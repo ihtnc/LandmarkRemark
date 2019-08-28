@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
@@ -31,7 +30,7 @@ namespace LandmarkRemark.Api.Security
             var firebaseClaim = firebase != null ? JToken.Parse(firebase.Value) : null;
             var emails = firebaseClaim?.SelectToken("identities.email").Value<JArray>();
 
-            // ASSUMPTION: Firebase claims has an array of emails, but it should only have one
+            // ASSUMPTION: Firebase claims has an array of emails, but it should only have one item
             var email = emails.Single().Value<string>();
 
             return new UserDetails

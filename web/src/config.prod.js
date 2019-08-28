@@ -1,4 +1,4 @@
 export default {
-    GOOGLE_MAP_API_KEY: "AIzaSyCtIWsUoMKvNvD5CiT9OZNFSM1zK4xgMJU",
+    GOOGLE_MAP_API_KEY: "GOOGLE_MAP_API_KEY",
     API_URL: "/api/"
 };
