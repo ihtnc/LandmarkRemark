@@ -1,3 +1,5 @@
+<img alt="App Preview" src="https://i.imgur.com/wJIoVjN.gif" width="500px" />
+
 # Landmark Remark Application
 
 Repository for the APP (ReactJS) and API (.NET Core) projects of the Landmark Remark application.
