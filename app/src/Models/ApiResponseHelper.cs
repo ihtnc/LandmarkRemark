@@ -75,7 +75,7 @@ namespace LandmarkRemark.Api.Models
             return ObjectResponse(StatusCodes.Status500InternalServerError, false, message: message, content: data);
         }
 
-        public static ActionResult<ApiResponse> ObjectResponse<T>(int statusCode, bool success, string message, T content = default)
+        public static ActionResult<ApiResponse> ObjectResponse<T>(int statusCode, bool success, string message, T content)
         {
             var response = new ApiResponse
             {
@@ -83,7 +83,7 @@ namespace LandmarkRemark.Api.Models
                 Message = message
             };
 
-            if (content != default) { response.Data = content; }
+            if (content != null) { response.Data = content; }
 
             return new ObjectResult(response) { StatusCode = statusCode };
         }

@@ -18,6 +18,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
 {
     public class FirebaseDatabaseRepositoryTests
     {
+        private readonly string _firebaseProjectId;
         private readonly string _firebaseDatabase;
         private readonly string _firebaseApiKey;
         private readonly string _requestAuthorisation;
@@ -29,12 +30,13 @@ namespace LandmarkRemark.Api.Tests.Repositories
 
         public FirebaseDatabaseRepositoryTests()
         {
+            _firebaseProjectId = "firebaseProjectId";
             _firebaseDatabase = "firebaseDatabaseUrl";
             _firebaseApiKey = "firebaseApiKey";
             _requestAuthorisation = "Bearer token";
 
             var options = Substitute.For<IOptions<FirebaseConfig>>();
-            options.Value.Returns(new FirebaseConfig { Database = _firebaseDatabase, ApiKey = _firebaseApiKey });
+            options.Value.Returns(new FirebaseConfig { ProjectId = _firebaseProjectId, DbEndPoint = _firebaseDatabase, ApiKey = _firebaseApiKey });
 
             _apiClient = Substitute.For<IApiClient>();
             _requestProvider = Substitute.For<IApiRequestProvider>();
@@ -56,7 +58,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
 
             await _repository.GetRemarks();
 
-            _requestProvider.Received(1).CreatePostRequest($"{_firebaseDatabase}:runQuery", Arg.Any<JObject>(), headers: Arg.Any<Dictionary<string, string>>());
+            _requestProvider.Received(1).CreatePostRequest($"{_firebaseDatabase}/projects/{_firebaseProjectId}/databases/(default)/documents:runQuery", Arg.Any<JObject>(), headers: Arg.Any<Dictionary<string, string>>());
 
             content.Should().ContainKey("structuredQuery");
             content.SelectToken("structuredQuery").Value<JObject>().Should().ContainKey("select");
@@ -209,7 +211,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
             };
             await _repository.AddRemark(details);
 
-            _requestProvider.Received(1).CreatePostRequest($"{_firebaseDatabase}/remarks", Arg.Any<JObject>(), headers: Arg.Any<Dictionary<string, string>>(), queries: Arg.Any<Dictionary<string, string>>());
+            _requestProvider.Received(1).CreatePostRequest($"{_firebaseDatabase}/projects/{_firebaseProjectId}/databases/(default)/documents/remarks", Arg.Any<JObject>(), headers: Arg.Any<Dictionary<string, string>>(), queries: Arg.Any<Dictionary<string, string>>());
 
             content.Should().ContainKey("fields");
             content.SelectToken("fields").Value<JObject>().Should().ContainKey("lat");
@@ -306,7 +308,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
             };
             await _repository.UpdateRemark(remarkId, updates);
 
-            _requestProvider.Received(1).CreatePatchRequest($"{_firebaseDatabase}/remarks/{remarkId}", Arg.Any<JObject>(), headers: Arg.Any<Dictionary<string, string>>(), queries: Arg.Any<Dictionary<string, string>>());
+            _requestProvider.Received(1).CreatePatchRequest($"{_firebaseDatabase}/projects/{_firebaseProjectId}/databases/(default)/documents/remarks/{remarkId}", Arg.Any<JObject>(), headers: Arg.Any<Dictionary<string, string>>(), queries: Arg.Any<Dictionary<string, string>>());
 
             content.Should().ContainKey("fields");
             content.SelectToken("fields").Value<JObject>().Should().ContainKey("remark");
@@ -345,7 +347,7 @@ namespace LandmarkRemark.Api.Tests.Repositories
             var remarkId = "remarkId";
             await _repository.DeleteRemark(remarkId);
 
-            _requestProvider.Received(1).CreateDeleteRequest($"{_firebaseDatabase}/remarks/{remarkId}", headers: Arg.Any<Dictionary<string, string>>(), queries: Arg.Any<Dictionary<string, string>>());
+            _requestProvider.Received(1).CreateDeleteRequest($"{_firebaseDatabase}/projects/{_firebaseProjectId}/databases/(default)/documents/remarks/{remarkId}", headers: Arg.Any<Dictionary<string, string>>(), queries: Arg.Any<Dictionary<string, string>>());
 
             header.Should().ContainKey("Authorization");
             header["Authorization"].Should().Be(_requestAuthorisation);

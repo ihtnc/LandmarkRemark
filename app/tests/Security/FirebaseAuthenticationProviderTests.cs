@@ -1,8 +1,6 @@
-using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using LandmarkRemark.Api.Config;
@@ -17,7 +15,7 @@ namespace LandmarkRemark.Api.Tests.Security
 {
     public class FirebaseAuthenticationProviderTests
     {
-        private readonly string _firebaseIdentity;
+        private readonly string _firebaseAuthEndpoint;
         private readonly string _firebaseApiKey;
         private readonly IApiClient _apiClient;
         private readonly IApiRequestProvider _requestProvider;
@@ -26,11 +24,11 @@ namespace LandmarkRemark.Api.Tests.Security
 
         public FirebaseAuthenticationProviderTests()
         {
-            _firebaseIdentity = "firebaseIdentityUrl";
+            _firebaseAuthEndpoint = "firebaseAuthEndpoint";
             _firebaseApiKey = "firebaseApiKey";
 
             var options = Substitute.For<IOptions<FirebaseConfig>>();
-            options.Value.Returns(new FirebaseConfig { Identity = _firebaseIdentity, ApiKey = _firebaseApiKey });
+            options.Value.Returns(new FirebaseConfig { AuthEndpoint = _firebaseAuthEndpoint, ApiKey = _firebaseApiKey });
 
             _apiClient = Substitute.For<IApiClient>();
             _requestProvider = Substitute.For<IApiRequestProvider>();
@@ -52,7 +50,7 @@ namespace LandmarkRemark.Api.Tests.Security
             };
             await _provider.SignUp(request);
 
-            _requestProvider.Received(1).CreatePostRequest($"{_firebaseIdentity}/signupNewUser", Arg.Any<JObject>(), Arg.Any<Dictionary<string, string>>(), Arg.Any<Dictionary<string, string>>(), null);
+            _requestProvider.Received(1).CreatePostRequest($"{_firebaseAuthEndpoint}/accounts:signUp", Arg.Any<JObject>(), Arg.Any<Dictionary<string, string>>(), Arg.Any<Dictionary<string, string>>(), null);
 
             content.Value<string>("email").Should().Be(request.Email);
             content.Value<string>("password").Should().Be(request.Password);
@@ -105,7 +103,7 @@ namespace LandmarkRemark.Api.Tests.Security
             };
             await _provider.SignIn(request);
 
-            _requestProvider.Received(1).CreatePostRequest($"{_firebaseIdentity}/verifyPassword", Arg.Any<JObject>(), Arg.Any<Dictionary<string, string>>(), Arg.Any<Dictionary<string, string>>(), null);
+            _requestProvider.Received(1).CreatePostRequest($"{_firebaseAuthEndpoint}/accounts:signInWithPassword", Arg.Any<JObject>(), Arg.Any<Dictionary<string, string>>(), Arg.Any<Dictionary<string, string>>(), null);
 
             content.Value<string>("email").Should().Be(request.Email);
             content.Value<string>("password").Should().Be(request.Password);

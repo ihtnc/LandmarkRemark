@@ -20,11 +20,15 @@ namespace LandmarkRemark.Api.Repositories
         private readonly Dictionary<string, string> _defaultHeader;
         private readonly Dictionary<string, string> _defaultQuery;
 
+        private readonly string _endpoint;
+
         public FirebaseRemarksRepository(IOptions<FirebaseConfig> options, IApiClient apiClient, IApiRequestProvider requestProvider, IHttpContextAccessor contextAccessor)
         {
             _config = options.Value ?? throw new InvalidOperationException("Missing config.");
             _apiClient = apiClient;
             _requestProvider = requestProvider;
+
+            _endpoint = $"{_config.DbEndPoint.TrimEnd('/')}/projects/{_config.ProjectId}/databases/(default)/documents";
 
             // TODO: REFACTOR
             //   This repository reuses the authorisation header from the original request which is a bad design.
@@ -52,7 +56,7 @@ namespace LandmarkRemark.Api.Repositories
 
         public async Task<IEnumerable<RemarkDetails>> GetRemarks()
         {
-            var url = $"{_config.Database.TrimEnd('/')}:runQuery";
+            var url = $"{_endpoint}:runQuery";
             var content = CreateGetRemarksRequest();
 
             var request = _requestProvider.CreatePostRequest(url, content, headers: _defaultHeader);
@@ -68,7 +72,7 @@ namespace LandmarkRemark.Api.Repositories
 
         public async Task<RemarkDetails> AddRemark(RemarkDetails remark)
         {
-            var url = $"{_config.Database.TrimEnd('/')}/remarks";
+            var url = $"{_endpoint}/remarks";
             var content = CreateAddRemarkRequest(remark);
 
             var request = _requestProvider.CreatePostRequest(url, content, headers: _defaultHeader, queries: _defaultQuery);
@@ -84,7 +88,7 @@ namespace LandmarkRemark.Api.Repositories
 
         public async Task UpdateRemark(string remarkId, UpdatableRemarkDetails updates)
         {
-            var url = $"{_config.Database.TrimEnd('/')}/remarks/{remarkId}";
+            var url = $"{_endpoint}/remarks/{remarkId}";
             var content = CreateUpdateRemarkRequest(updates);
 
             var updateQuery = new Dictionary<string, string>(_defaultQuery);
@@ -97,7 +101,7 @@ namespace LandmarkRemark.Api.Repositories
 
         public async Task DeleteRemark(string remarkId)
         {
-            var url = $"{_config.Database.TrimEnd('/')}/remarks/{remarkId}";
+            var url = $"{_endpoint}/remarks/{remarkId}";
 
             var request = _requestProvider.CreateDeleteRequest(url, headers: _defaultHeader, queries: _defaultQuery);
             await _apiClient.Send<object>(request);

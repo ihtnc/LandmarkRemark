@@ -1,17 +1,12 @@
-using System.Linq;
 using System;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using LandmarkRemark.Api.Controllers;
 using LandmarkRemark.Api.Models;
-using LandmarkRemark.Api.Repositories.Models;
-using LandmarkRemark.Api.Security;
 using LandmarkRemark.Api.Services;
 using Xunit;
 using FluentAssertions;
 using NSubstitute;
-using UserDetails = LandmarkRemark.Api.Security.UserDetails;
 
 namespace LandmarkRemark.Api.Tests.Controllers
 {

@@ -1,10 +1,10 @@
-﻿using AspNetCore.Firebase.Authentication.Extensions;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using LandmarkRemark.Api.Config;
 using LandmarkRemark.Api.Filters;
 using LandmarkRemark.Api.Middlewares;
@@ -27,8 +27,9 @@ namespace LandmarkRemark.Api
                 .AddOptions()
                 .Configure<FirebaseConfig>(option =>
                 {
-                    option.Identity = Configuration["ENV_FIREBASE_IDENTITY"];
-                    option.Database = Configuration["ENV_FIREBASE_DATABASE"];
+                    option.ProjectId = Configuration["ENV_FIREBASE_PROJECT_ID"];
+                    option.AuthEndpoint = Configuration["ENV_FIREBASE_AUTH_ENDPOINT"];
+                    option.DbEndPoint = Configuration["ENV_FIREBASE_DB_ENDPOINT"];
                     option.ApiKey = Configuration["ENV_FIREBASE_APIKEY"];
                 })
                 .Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
@@ -41,16 +42,15 @@ namespace LandmarkRemark.Api
                 {
                     config.Filters.Add(new AuthoriseFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
                     config.Filters.Add<ModelValidationFilter>();
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                });
 
             services.AddApiDocumentation();
 
-            services.AddFirebaseAuthentication(Configuration["Firebase:Authentication:Issuer"], Configuration["Firebase:Authentication:Audience"]);
+            services.AddFirebaseAuthentication(Configuration["ENV_FIREBASE_PROJECT_ID"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -64,16 +64,18 @@ namespace LandmarkRemark.Api
             }
 
             app.UseCors(builder =>
-                builder.AllowAnyOrigin()
-                       .AllowAnyHeader()
+                builder.AllowAnyHeader()
                        .AllowAnyMethod()
-                       .AllowCredentials());
+                       .AllowCredentials()
+                       .SetIsOriginAllowed(hostname => true));
+
+            app.UseRouting();
 
             app.UseApiDocumentation();
 
-            app.UseAuthentication();
+            app.UseFirebaseAuthentication();
 
-            app.UseMvc();
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

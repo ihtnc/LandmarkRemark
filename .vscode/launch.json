@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/app/src/bin/Debug/netcoreapp2.2/LandmarkRemark.Api.dll",
+            "program": "${workspaceFolder}/app/src/bin/Debug/netcoreapp5.0/LandmarkRemark.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/output",
             "stopAtEntry": false,

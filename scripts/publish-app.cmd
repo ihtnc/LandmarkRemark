@@ -1,2 +1,2 @@
 @echo off
-dotnet publish --output ..\..\output ..\app\src\LandmarkRemark.Api.csproj
+dotnet publish --output ..\output ..\app\src\LandmarkRemark.Api.csproj

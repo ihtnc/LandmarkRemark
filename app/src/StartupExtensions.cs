@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
-using Swashbuckle.AspNetCore.Swagger;
 using LandmarkRemark.Api.Http;
 using LandmarkRemark.Api.Repositories;
 using LandmarkRemark.Api.Security;
@@ -32,27 +34,47 @@ namespace LandmarkRemark
                     .AddTransient<IUserDetailsProvider, UserDetailsProvider>();
         }
 
+        public static IServiceCollection AddFirebaseAuthentication(this IServiceCollection services, string projectId)
+        {
+            services
+                 .AddAuthorization()
+                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                 .AddJwtBearer(options =>
+                 {
+                     options.Authority = $"https://securetoken.google.com/{projectId}";
+                     options.TokenValidationParameters = new TokenValidationParameters
+                     {
+                         ValidateIssuer = true,
+                         ValidIssuer = $"https://securetoken.google.com/{projectId}",
+                         ValidateAudience = true,
+                         ValidAudience = projectId,
+                         ValidateLifetime = true
+                     };
+                 });
+
+            return services;
+        }
+
         public static IServiceCollection AddApiDocumentation(this IServiceCollection services)
         {
             return services.AddSwaggerGen(c =>
             {
-                c.AddSecurityDefinition("oauth2", new ApiKeyScheme
+                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
-                    In = "header",
+                    In = ParameterLocation.Header,
                     Name = "Authorization",
-                    Type = "apiKey"
+                    Type = SecuritySchemeType.ApiKey
                 });
 
                 c.OperationFilter<SecurityRequirementsOperationFilter>(false);
 
-                c.SwaggerDoc("V1", new Info
+                c.SwaggerDoc("V1", new OpenApiInfo
                 {
                     Title = "Landmark Remark API",
                     Version = "V1",
                     Description = "Backend API for the Landmark Remark app",
-                    TermsOfService = "None",
-                    Contact = new Contact
+                    Contact = new OpenApiContact
                     {
                         Name = "Art Amurao"
                     }
@@ -64,6 +86,12 @@ namespace LandmarkRemark
         {
             return app.UseSwagger()
                       .UseSwaggerUI(c => { c.SwaggerEndpoint($"/swagger/V1/swagger.json", $"Landmark Remark V1"); });
+        }
+
+        public static IApplicationBuilder UseFirebaseAuthentication(this IApplicationBuilder app)
+        {
+            return app.UseAuthentication()
+                      .UseAuthorization();
         }
     }
 }

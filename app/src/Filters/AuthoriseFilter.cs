@@ -30,7 +30,9 @@ namespace LandmarkRemark.Api.Filters
             }
 
             // Allow Anonymous skips all authorization
-            if (context.Filters.Any(item => item is IAllowAnonymousFilter))
+            var hasAnonymousFilter = context.Filters.OfType<IAllowAnonymousFilter>().Any();
+            var hasAnonymouseAttribute = context.ActionDescriptor.EndpointMetadata.OfType<AllowAnonymousAttribute>().Any();
+            if (hasAnonymousFilter || hasAnonymouseAttribute)
             {
                 return;
             }
