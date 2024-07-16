@@ -52,7 +52,7 @@ exports[`Controls styled components Button should match latest snapshot 1`] = `
       "attrs": Array [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-gZMcBi",
-        "isStatic": true,
+        "isStatic": false,
         "rules": Array [
           "
   min-width: 80px;
@@ -84,7 +84,7 @@ exports[`Controls styled components ButtonWrapper should match latest snapshot 1
       "attrs": Array [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-iwsKbI",
-        "isStatic": true,
+        "isStatic": false,
         "rules": Array [
           "
   display: flex;
@@ -201,7 +201,7 @@ exports[`Controls styled components Header should match latest snapshot 1`] = `
       "attrs": Array [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-bwzfXH",
-        "isStatic": true,
+        "isStatic": false,
         "rules": Array [
           "
   font-weight: bold;
@@ -231,7 +231,7 @@ exports[`Controls styled components InlineTextWrapper should match latest snapsh
       "attrs": Array [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-VigVT",
-        "isStatic": true,
+        "isStatic": false,
         "rules": Array [
           "
   display: flex;
@@ -276,7 +276,7 @@ exports[`Controls styled components Input should match latest snapshot 1`] = `
       "attrs": Array [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-gzVnrw",
-        "isStatic": true,
+        "isStatic": false,
         "rules": Array [
           "
   font-size: larger;
@@ -308,7 +308,7 @@ exports[`Controls styled components Label should match latest snapshot 1`] = `
       "attrs": Array [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-EHOje",
-        "isStatic": true,
+        "isStatic": false,
         "rules": Array [
           "
   padding: 1vh 1vw;
@@ -451,7 +451,7 @@ exports[`Controls styled components TextWrapper should match latest snapshot 1`]
       "attrs": Array [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-gqjmRU",
-        "isStatic": true,
+        "isStatic": false,
         "rules": Array [
           "
   display: flex;
@@ -487,7 +487,7 @@ exports[`Controls styled components Wrapper should match latest snapshot 1`] = `
       "attrs": Array [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-bdVaJa",
-        "isStatic": true,
+        "isStatic": false,
         "rules": Array [
           "
   font-size: 16px;

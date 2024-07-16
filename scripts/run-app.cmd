@@ -1,2 +1,2 @@
 @echo off
-dotnet run -p ..\app\src\LandmarkRemark.Api.csproj
+dotnet run --project ..\app\src\LandmarkRemark.Api.csproj

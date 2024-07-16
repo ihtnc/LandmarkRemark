@@ -6,6 +6,6 @@ describe("Config module", () => {
   });
 
   test("should define API_URL", () => {
-    expect(config.API_URL).toEqual("https://localhost:5001/api/");
+    expect(config.API_URL).toEqual("https://localhost:8179/api/");
   });
 });
