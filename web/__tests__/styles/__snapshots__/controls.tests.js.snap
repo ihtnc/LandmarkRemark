@@ -1,16 +1,16 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Controls styled components Arrow should match latest snapshot 1`] = `
 <StyledComponent
   direction="left"
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-jzJRlG",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   background-image: url(",
           [Function],
@@ -31,7 +31,7 @@ exports[`Controls styled components Arrow should match latest snapshot 1`] = `
         ],
       },
       "displayName": "styled.span",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-jzJRlG",
       "target": "span",
@@ -47,13 +47,13 @@ exports[`Controls styled components Arrow should match latest snapshot 1`] = `
 exports[`Controls styled components Button should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-gZMcBi",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   min-width: 80px;
   padding: 1vh 1vw;
@@ -63,7 +63,7 @@ exports[`Controls styled components Button should match latest snapshot 1`] = `
         ],
       },
       "displayName": "styled.button",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-gZMcBi",
       "target": "button",
@@ -79,13 +79,13 @@ exports[`Controls styled components Button should match latest snapshot 1`] = `
 exports[`Controls styled components ButtonWrapper should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-iwsKbI",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   display: flex;
   justify-content: space-between;
@@ -100,7 +100,7 @@ exports[`Controls styled components ButtonWrapper should match latest snapshot 1
         ],
       },
       "displayName": "styled.div",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-iwsKbI",
       "target": "div",
@@ -117,13 +117,13 @@ exports[`Controls styled components Caret should match latest snapshot 1`] = `
 <StyledComponent
   expand={true}
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-fjdhpX",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   background-image: url(",
           [Function],
@@ -138,7 +138,7 @@ exports[`Controls styled components Caret should match latest snapshot 1`] = `
         ],
       },
       "displayName": "styled.span",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-fjdhpX",
       "target": "span",
@@ -154,13 +154,13 @@ exports[`Controls styled components Caret should match latest snapshot 1`] = `
 exports[`Controls styled components GoogleMarker should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-jTzLTM",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   background-image: url(",
           [Function],
@@ -179,7 +179,7 @@ exports[`Controls styled components GoogleMarker should match latest snapshot 1`
         ],
       },
       "displayName": "styled.span",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-jTzLTM",
       "target": "span",
@@ -196,13 +196,13 @@ exports[`Controls styled components GoogleMarker should match latest snapshot 1`
 exports[`Controls styled components Header should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-bwzfXH",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   font-weight: bold;
   padding: 1vh 1vw;
@@ -210,7 +210,7 @@ exports[`Controls styled components Header should match latest snapshot 1`] = `
         ],
       },
       "displayName": "styled.div",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-bwzfXH",
       "target": "div",
@@ -226,13 +226,13 @@ exports[`Controls styled components Header should match latest snapshot 1`] = `
 exports[`Controls styled components InlineTextWrapper should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-VigVT",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   display: flex;
   flex-direction: row;
@@ -255,7 +255,7 @@ exports[`Controls styled components InlineTextWrapper should match latest snapsh
         ],
       },
       "displayName": "styled.div",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-VigVT",
       "target": "div",
@@ -271,13 +271,13 @@ exports[`Controls styled components InlineTextWrapper should match latest snapsh
 exports[`Controls styled components Input should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-gzVnrw",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   font-size: larger;
   padding: 1vh 1vw;
@@ -287,7 +287,7 @@ exports[`Controls styled components Input should match latest snapshot 1`] = `
         ],
       },
       "displayName": "styled.input",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-gzVnrw",
       "target": "input",
@@ -303,13 +303,13 @@ exports[`Controls styled components Input should match latest snapshot 1`] = `
 exports[`Controls styled components Label should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-EHOje",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   padding: 1vh 1vw;
   align-self: center;
@@ -319,7 +319,7 @@ exports[`Controls styled components Label should match latest snapshot 1`] = `
         ],
       },
       "displayName": "styled.div",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-EHOje",
       "target": "div",
@@ -335,13 +335,13 @@ exports[`Controls styled components Label should match latest snapshot 1`] = `
 exports[`Controls styled components PasswordStrengthIcon should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-dnqmqq",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   background-image: url(",
           [Function],
@@ -355,7 +355,7 @@ exports[`Controls styled components PasswordStrengthIcon should match latest sna
         ],
       },
       "displayName": "styled.span",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-dnqmqq",
       "target": "span",
@@ -372,13 +372,13 @@ exports[`Controls styled components Status should render correctly for error 1`]
 <StyledComponent
   error={true}
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-bxivhb",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   padding: 1vh 1vw;
   margin: 1vh 1vw 1vh 0px;
@@ -393,7 +393,7 @@ exports[`Controls styled components Status should render correctly for error 1`]
         ],
       },
       "displayName": "styled.span",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-bxivhb",
       "target": "span",
@@ -409,13 +409,13 @@ exports[`Controls styled components Status should render correctly for error 1`]
 exports[`Controls styled components Status should render correctly for non error 1`] = `
 <StyledComponent
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-bxivhb",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   padding: 1vh 1vw;
   margin: 1vh 1vw 1vh 0px;
@@ -430,7 +430,7 @@ exports[`Controls styled components Status should render correctly for non error
         ],
       },
       "displayName": "styled.span",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-bxivhb",
       "target": "span",
@@ -446,13 +446,13 @@ exports[`Controls styled components Status should render correctly for non error
 exports[`Controls styled components TextWrapper should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-gqjmRU",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   display: flex;
   flex-direction: row;
@@ -466,7 +466,7 @@ exports[`Controls styled components TextWrapper should match latest snapshot 1`]
         ],
       },
       "displayName": "styled.div",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-gqjmRU",
       "target": "div",
@@ -482,13 +482,13 @@ exports[`Controls styled components TextWrapper should match latest snapshot 1`]
 exports[`Controls styled components Wrapper should match latest snapshot 1`] = `
 <StyledComponent
   forwardedComponent={
-    Object {
+    {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": Array [],
+      "attrs": [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-bdVaJa",
         "isStatic": false,
-        "rules": Array [
+        "rules": [
           "
   font-size: 16px;
   display: flex;
@@ -499,7 +499,7 @@ exports[`Controls styled components Wrapper should match latest snapshot 1`] = `
         ],
       },
       "displayName": "styled.div",
-      "foldedComponentIds": Array [],
+      "foldedComponentIds": [],
       "render": [Function],
       "styledComponentId": "sc-bdVaJa",
       "target": "div",
